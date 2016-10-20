@@ -2,17 +2,19 @@ package com.niit.binder.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table
+@Table(name = "b_friendrequest")
 @Component
-public class FriendRequest implements Serializable {
+public class FriendRequest extends BaseDomain implements Serializable {
 	
 	/**
 	 * 
@@ -22,12 +24,13 @@ public class FriendRequest implements Serializable {
 	/* declare the database column names for User... */
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String id;
 	
-	@NotBlank
+	@Column(name = "request_to")
 	private String requestTo;
 	
-	@NotBlank
+	@Column(name = "request_from")
 	private String requestFrom;
 	
 	/* getters/setters for all the fields taken... */

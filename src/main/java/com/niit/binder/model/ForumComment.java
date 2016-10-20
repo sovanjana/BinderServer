@@ -1,24 +1,22 @@
 package com.niit.binder.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table
+@Table(name = "b_forumcomment")
 @Component
-public class ForumComment implements Serializable {
+public class ForumComment extends BaseDomain implements Serializable {
 
 	/**
 	 * 
@@ -28,27 +26,19 @@ public class ForumComment implements Serializable {
 	/* declare the database column names for User... */
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private String id;
 	
-	@ManyToOne
-	@JoinColumn(name="forumId")
-	Forum forum;
-	
-	@NotBlank
-	@Length(min = 5, max = 100)
+	private String forumId;
+		
 	@Column(name = "forum_comment")
 	private String comment;
 	
-	@NotBlank
-	private String commentBy;
+	private String userId;
 	
-	@NotBlank
-	private Date commentDate;
+	@Column(name = "commented_date")
+	private Timestamp commentDate;
 	
-	public ForumComment() {
-		this.id = "comment" + UUID.randomUUID().toString().substring(24).toUpperCase();
-	}
-
 	/* getters/setters for all the fields taken... */
 	
 	public String getId() {
@@ -59,37 +49,36 @@ public class ForumComment implements Serializable {
 		this.id = id;
 	}
 
-	public Date getCommentDate() {
+	public Timestamp getCommentDate() {
 		return commentDate;
 	}
 
-	public void setCommentDate(Date commentDate) {
+	public void setCommentDate(Timestamp commentDate) {
 		this.commentDate = commentDate;
-	}
-
-	public Forum getForum() {
-		return forum;
-	}
-
-	public void setForum(Forum forum) {
-		this.forum = forum;
 	}
 
 	public String getComment() {
 		return comment;
 	}
 
+	public String getForumId() {
+		return forumId;
+	}
+
+	public void setForumId(String forumId) {
+		this.forumId = forumId;
+	}
+
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
 
-	public String getCommentBy() {
-		return commentBy;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setCommentBy(String commentBy) {
-		this.commentBy = commentBy;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
-	
 	
 }

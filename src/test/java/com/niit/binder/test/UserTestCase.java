@@ -3,7 +3,7 @@ package com.niit.binder.test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.niit.binder.dao.UserDAO;
-import com.niit.binder.model.User;
+import com.niit.binder.model.Users;
 
 public class UserTestCase {
 
@@ -16,27 +16,28 @@ public class UserTestCase {
 		
 		//Here i'm going to perform basic database operations using hibernate provided functions....
 		
-		User user = (User) context.getBean("user");
-		System.out.println("reached....2");
+		Users users = (Users) context.getBean("user");
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
-		System.out.println("reached....3");
 		
-		user.setId("arpan001");
-		user.setName("Arpan Ghosh");
-		user.setPassword("arpan@001");
-		user.setGender("MALE");
-		user.setEmail("arpanriders@gmail.com");
-		user.setPhone("9007826433");
-		user.setRole("EMPLOYEE");
-		user.setImage(null);
-		user.setPhotos(null);
+		users.setId("prantik009");
+		users.setName("Prantik Hore");
+		users.setPassword("prantik001");
+		users.setGender("MALE");
+		users.setEmail("prantik@gmail.com");
+		users.setPhone("1010101010");
+		users.setRole("EMPLOYEE");
+		users.setImage(null);
+		users.setPhotos(null);
 				
-		if(userDAO.save(user) == true) {
+		System.out.println("reached just before saving the details...");
+		
+		if(userDAO.save(users) == true) {
 			System.out.println("User created successfully...");
 		}
 		else {
 			System.out.println("Not able to create user...");
 			
 		}
+		
 	}
 }

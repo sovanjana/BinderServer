@@ -90,19 +90,20 @@ public class BlogDAOImpl implements BlogDAO {
 		@SuppressWarnings("unchecked")
 		List<Blog> list = query.list();
 		
-		if(list == null) {
-			return null;
+		if(list != null && !list.isEmpty()) {
+			return list.get(0);
 		}
 		else {
-			return list.get(0);
+			return null;
 		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<Blog> list() {
-		String hql = " from Blog ";
+		String hql = "from Blog";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		
 		return query.list();
 	}	
 }

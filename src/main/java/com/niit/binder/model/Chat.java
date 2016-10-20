@@ -1,20 +1,21 @@
 package com.niit.binder.model;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.UUID;
+import java.sql.Timestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table
+@Table(name = "b_chat")
 @Component
-public class Chat implements Serializable {
+public class Chat extends BaseDomain implements Serializable {
 
 	/**
 	 * 
@@ -24,21 +25,19 @@ public class Chat implements Serializable {
 	/* declare the database column names for User... */
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private String chatId;
 	
-	@NotBlank
+	@Column(name = "sender")
 	private String senderId;
 	
-	@NotBlank
+	@Column(name = "receiver")
 	private String receiverId;
 	
 	private String content;
 	
-	private Date dateTime;
-	
-	public Chat() {
-		this.chatId = "chat" + UUID.randomUUID().toString().substring(24).toUpperCase();
-	}
+	@Column(name = "date_time")
+	private Timestamp dateTime;
 	
 	/* getters/setters for all the fields taken... */
 
@@ -74,13 +73,13 @@ public class Chat implements Serializable {
 		this.content = content;
 	}
 
-	public Date getDateTime() {
+	public Timestamp getDateTime() {
 		return dateTime;
 	}
 
-	public void setDateTime(Date dateTime) {
+	public void setDateTime(Timestamp dateTime) {
 		this.dateTime = dateTime;
 	}
-	
+
 	
 }

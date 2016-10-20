@@ -1,23 +1,22 @@
 package com.niit.binder.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
-import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table
+@Table(name = "b_blog")
 @Component
-public class Blog implements Serializable {
+public class Blog extends BaseDomain implements Serializable {
 
 	/**
 	 * 
@@ -27,31 +26,21 @@ public class Blog implements Serializable {
 	/* declare the database column names for User... */
 	
 	@Id
+	//@GeneratedValue(strategy=GenerationType.AUTO)
 	private String id;
 	
-	@NotBlank
-	@Length(min = 5, max = 100, message = "title should be understandable.")
 	private String title;
 	
-	@NotBlank
-	@Length(min = 50, max = 2000, message = "post should contain 50-2000 characters. ")
+	private String reason;
+	
 	private String content;
 	
-	@NotBlank
-	private Date postDate;
+	@Column(name = "post_date")
+	private Timestamp postDate;
 	
-	@ManyToOne
-	@JoinColumn(name="ownerId")
-	User user;
+	private String userId;
 		
-	@NotBlank
 	private String status;
-	
-	
-	
-	public Blog() {
-		this.id = "blog" + UUID.randomUUID().toString().substring(24).toUpperCase();
-	}
 	
 	/* getters/setters for all the fields taken... */
 
@@ -79,20 +68,22 @@ public class Blog implements Serializable {
 		this.content = content;
 	}
 
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
 	public Date getPostDate() {
+		Date date = new Date();
+		date.toString();
 		return postDate;
 	}
 
-	public void setPostDate(Date postDate) {
+	public void setPostDate(Timestamp postDate) {
 		this.postDate = postDate;
-	}
-	
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 	public String getStatus() {
@@ -102,6 +93,12 @@ public class Blog implements Serializable {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}	
 }

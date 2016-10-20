@@ -1,21 +1,19 @@
 package com.niit.binder.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table
+@Table(name = "b_job")
 @Component
-public class Job implements Serializable{
+public class Job extends BaseDomain implements Serializable{
 
 	/**
 	 * 
@@ -27,19 +25,15 @@ public class Job implements Serializable{
 	@Id
 	private String id;
 	
-	@NotBlank
-	@Length(min = 3)
+	@Column(name = "company_name")
 	private String companyName;
 	
-	@NotBlank
 	private String location;
 	
-	@NotBlank
-	@Length(min = 50)
 	private String description;
 	
 	@Column(name = "post_date")
-	private Date date;
+	private Timestamp date;
 	
 	/* getters/setters for all the fields taken... */
 
@@ -75,11 +69,11 @@ public class Job implements Serializable{
 		this.description = description;
 	}
 
-	public Date getDate() {
+	public Timestamp getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Timestamp date) {
 		this.date = date;
 	}
 

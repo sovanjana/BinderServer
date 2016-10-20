@@ -4,22 +4,24 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.niit.binder.model.User;
+import com.niit.binder.model.Users;
 
 @Repository		//@Repository annotation is a specialization of the @Component annotation with similar use and functionality...
 public interface UserDAO {
 
 	// Declare all CRUD Operations...
 	
-	public boolean save(User user);
+	public boolean save(Users users);
 	
-	public boolean update(User user);
+	public boolean update(Users users);
 	
-	public boolean saveOrUpdate(User user);
+	public boolean saveOrUpdate(Users users);
 	
-	public boolean delete(User user);
+	public boolean delete(Users users);
 	
-	public User get(String id);
+	public Users get(String id);
 	
-	public List<User> list();
+	public List<Users> list();
+	
+	public Users authenticate(String id, String password);
 }

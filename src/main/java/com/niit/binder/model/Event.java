@@ -1,23 +1,22 @@
 package com.niit.binder.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 @Entity
-@Table
+@Table(name = "b_event")
 @Component
-public class Event implements Serializable {
+public class Event extends BaseDomain implements Serializable {
 
 	/**
 	 * 
@@ -27,23 +26,17 @@ public class Event implements Serializable {
 	/* declare the database column names for User... */
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private String id;
 	
-	@NotBlank
-	@Length(min = 5, max = 25, message = "name should contain 5-25 characters")
 	private String name;
 	
-	@NotBlank
-	@Length(min = 25, message = "description should contain atleast 25 characters")
+	private String venue;
+	
 	private String description;
 	
 	@Column(name = "event_date")
-	private Date date;
-	
-	private String photos;
-	
-	@Transient
-	private MultipartFile file;
+	private Timestamp date;
 	
 	/* getters/setters for all the fields taken... */
 
@@ -71,29 +64,23 @@ public class Event implements Serializable {
 		this.description = description;
 	}
 
-	public Date getDate() {
+	
+	public Timestamp getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Timestamp date) {
 		this.date = date;
 	}
 
-	public String getPhotos() {
-		return photos;
+	public String getVenue() {
+		return venue;
 	}
 
-	public void setPhotos(String photos) {
-		this.photos = photos;
+	public void setVenue(String venue) {
+		this.venue = venue;
 	}
 
-	public MultipartFile getFile() {
-		return file;
-	}
-
-	public void setFile(MultipartFile file) {
-		this.file = file;
-	}
 	
 	
 }
