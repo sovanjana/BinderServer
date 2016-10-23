@@ -29,26 +29,26 @@ public class Users extends BaseDomain implements Serializable {
 	@Id
 	private String id;
 	
-	@NotBlank(message = "Name field can not be blank")
-	@Length(min = 3 , max = 50, message = "Name contains atleast 3 character")
+	//@NotBlank(message = "Name field can not be blank")
+	//@Length(min = 3 , max = 50, message = "Name contains atleast 3 character")
 	private String name;
 	
-	@NotBlank(message="Please select a password")
-	@Length(min=5, max=15, message="Password should be between 5 - 15 charactes")
+	//@NotBlank(message="Please select a password")
+	//@Length(min=5, max=15, message="Password should be between 5 - 15 charactes")
 	private String password;
 	
-	@NotBlank
+	//@NotBlank
 	private String gender;
 	
-	@NotBlank
-	@Email(message="Please provide a valid email address")
+	//@NotBlank
+	//@Email(message="Please provide a valid email address")
 	private String email;
 	
-	@NotBlank
-	@Pattern(regexp="(^$|[0-9]{10})", message = "Please provide a valid phone no.")
+	//@NotBlank
+	//@Pattern(regexp="(^$|[0-9]{10})", message = "Please provide a valid phone no.")
 	private String phone;
 	
-	@NotBlank
+	//@NotBlank
 	private String role;
 	
 	private String image;

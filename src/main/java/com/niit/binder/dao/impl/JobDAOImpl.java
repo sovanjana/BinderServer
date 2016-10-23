@@ -13,7 +13,7 @@ import com.niit.binder.dao.JobDAO;
 import com.niit.binder.model.Job;
 
 @EnableTransactionManagement
-@Repository(value="JobDAO")
+@Repository(value="jobDAO")
 public class JobDAOImpl implements JobDAO {
 	
 	@Autowired	//@Autowired annotation provides more fine-grained control over where and how autowiring should be accomplished..

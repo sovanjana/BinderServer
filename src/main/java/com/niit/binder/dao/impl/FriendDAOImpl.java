@@ -13,7 +13,7 @@ import com.niit.binder.dao.FriendDAO;
 import com.niit.binder.model.Friend;
 
 @EnableTransactionManagement
-@Repository(value="FriendDAO")
+@Repository(value="friendDAO")
 public class FriendDAOImpl implements FriendDAO {
 	
 	@Autowired	//@Autowired annotation provides more fine-grained control over where and how autowiring should be accomplished..

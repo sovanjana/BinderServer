@@ -13,7 +13,7 @@ import com.niit.binder.dao.ChatDAO;
 import com.niit.binder.model.Chat;
 
 @EnableTransactionManagement
-@Repository(value="ChatDAO")
+@Repository(value="chatDAO")
 public class ChatDAOImpl implements ChatDAO {
 	
 	@Autowired	//@Autowired annotation provides more fine-grained control over where and how autowiring should be accomplished..

@@ -13,7 +13,7 @@ import com.niit.binder.dao.BlogDAO;
 import com.niit.binder.model.Blog;
 
 @EnableTransactionManagement
-@Repository(value="BlogDAO")
+@Repository(value="blogDAO")
 public class BlogDAOImpl implements BlogDAO {
 	
 	@Autowired	//@Autowired annotation provides more fine-grained control over where and how autowiring should be accomplished..

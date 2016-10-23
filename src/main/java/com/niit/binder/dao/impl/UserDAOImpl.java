@@ -2,6 +2,7 @@ package com.niit.binder.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,9 +108,18 @@ public class UserDAOImpl implements UserDAO {
 		return query.list();
 	}	
 	
+	/*@Transactional
+	public List<Users> list1(){
+		@SuppressWarnings("unchecked")
+		List<Users> list = (List<Users>) sessionFactory.getCurrentSession()
+						.createCriteria(Users.class)
+						.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+		return list;
+	}*/
+	
 	@Transactional
 	public Users authenticate(String id, String password) {
-		String hql = "from User where id = '" + id + "' and " + "password = '" + password + "'";
+		String hql = "from Users where id = '" + id + "' and " + "password = '" + password + "'";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		
 		@SuppressWarnings("unchecked")

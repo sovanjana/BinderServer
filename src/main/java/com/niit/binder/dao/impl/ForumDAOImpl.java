@@ -13,7 +13,7 @@ import com.niit.binder.dao.ForumDAO;
 import com.niit.binder.model.Forum;
 
 @EnableTransactionManagement
-@Repository(value="ForumDAO")
+@Repository(value="forumDAO")
 public class ForumDAOImpl implements ForumDAO {
 	
 	@Autowired	//@Autowired annotation provides more fine-grained control over where and how autowiring should be accomplished..

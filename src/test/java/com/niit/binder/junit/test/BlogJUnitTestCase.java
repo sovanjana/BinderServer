@@ -2,6 +2,8 @@ package com.niit.binder.junit.test;
 
 import static org.junit.Assert.assertEquals;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.spi.LoggerFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import com.niit.binder.dao.BlogDAO;
 import com.niit.binder.model.Blog;
 
 public class BlogJUnitTestCase {
+	
+	Logger log =  Logger.getLogger(BlogJUnitTestCase.class);
 	
 	@Autowired
 	BlogDAO blogDAO;	//instance of BlogDAO created...
@@ -32,12 +36,12 @@ public class BlogJUnitTestCase {
 		
 	}
 	
-	@Test
+	//@Test
 	public void listBlog() {
-		
+		log.debug("Entered in listBlog method.........");
 		assertEquals(blogDAO.list().size(), 1);
 	}
-	
+		
 	//@Test
 	public void addBlog() {
 		blog.setId("blog001");

@@ -2,6 +2,7 @@ package com.niit.binder.junit.test;
 
 import static org.junit.Assert.assertEquals;
 
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import com.niit.binder.model.Users;
 
 public class UserJUnitTestCase {
 	
+	Logger log =  Logger.getLogger(UserJUnitTestCase.class);
+			
 	@Autowired
 	UserDAO userDAO;	//instance of UserDAO created...
 	
@@ -34,13 +37,16 @@ public class UserJUnitTestCase {
 	
 	//@Test
 	public void listUser() {
-		
-		assertEquals(userDAO.list().size(), 3);
+		log.debug("Entered in listUser method...........");
+		//System.out.println(userDAO.list()+"..............................................");
+		assertEquals(userDAO.list().size(), 5);
 	}
 	
-	//@Test
+	
+	
+	@Test
 	public void addUser() {
-		users.setId("shamik001");
+		users.setId("abc001");
 		users.setName("Sudipta Samanta");
 		users.setPassword("sudipta001");
 		users.setGender("male");

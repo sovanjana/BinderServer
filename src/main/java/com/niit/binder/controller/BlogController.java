@@ -1,11 +1,15 @@
-/*package com.niit.binder.controller;
+package com.niit.binder.controller;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,7 +35,8 @@ public class BlogController {
 	}
 	
 	//	http://localhost:8081/BinderServer/blog/
-	@RequestMapping(value = "/blog/", method = RequestMethod.POST)
+	//@RequestMapping(value = "/blog", method = RequestMethod.POST)
+	@PostMapping(value = "/blog")
 	public ResponseEntity<Blog> createBlog(@RequestBody Blog blog) {
 		if(blogDAO.get(blog.getId()) == null) {
 			blogDAO.save(blog);
@@ -40,9 +45,10 @@ public class BlogController {
 		blog.setErrorMessage("Blog already exist with id : " +blog.getId());
 		return new ResponseEntity<Blog>(HttpStatus.OK);
 	}
-	
+
 	//	http://localhost:8081/BinderServer/blog/{id}
-	@RequestMapping(value = "/blog/{id}", method = RequestMethod.PUT)
+	//@RequestMapping(value = "/blog/{id}", method = RequestMethod.PUT)
+	@PutMapping(value = "/blog/{id}")
 	public ResponseEntity<Blog> updateBlog(@PathVariable("id") String id, @RequestBody Blog blog) {
 		if(blogDAO.get(id) == null) {
 			blog = new Blog();
@@ -54,7 +60,8 @@ public class BlogController {
 	}
 	
 	//	http://localhost:8081/BinderServer/blog/{id}
-	@RequestMapping(value = "/blog/{id}", method = RequestMethod.DELETE)
+	//@RequestMapping(value = "/blog/{id}", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/blog/{id}")
 	public ResponseEntity<Blog> deleteBlog(@PathVariable("id") String id) {
 		Blog blog = blogDAO.get(id);
 		if(blog == null) {
@@ -67,7 +74,8 @@ public class BlogController {
 	}
 	
 	//	http://localhost:8081/BinderServer/blog/{id}
-	@RequestMapping(value = "/blog/{id}", method = RequestMethod.GET)
+	//@RequestMapping(value = "/blog/{id}", method = RequestMethod.GET)
+	@GetMapping(value = "/blog/{id}")
 	public ResponseEntity<Blog> getBlog(@PathVariable("id") String id) {
 		Blog blog = blogDAO.get(id);
 		if(blog == null) {
@@ -79,4 +87,3 @@ public class BlogController {
 	}
 	
 }
-*/
