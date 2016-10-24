@@ -9,7 +9,9 @@ import com.niit.binder.model.Event;
 @Repository		//@Repository annotation is a specialization of the @Component annotation with similar use and functionality...
 public interface EventDAO {
 
-	// Declare all CRUD Operations...
+	/**
+	 *  Declare all CRUD Operations...
+	 */
 	
 		public boolean save(Event event);
 		

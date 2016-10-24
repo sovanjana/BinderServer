@@ -3,6 +3,8 @@ package com.niit.binder.model;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -18,41 +20,54 @@ public class Friend extends BaseDomain implements Serializable{
 	 */
 	private static final long serialVersionUID = 10L;
 
-	/* declare the database column names for User... */
+	/**
+	 *  declare the database column names for User... 
+	 */
 	
 	@Id
-	private String id;
+	//@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
+	
+	private String userId;
+	
+	private String friendId;
 	
 	private String name;
 	
-	private String group;
-	
-	/* getters/setters for all the fields taken... */
+	private String status;	//  new / accepted / rejected
 
-	public String getId() {
+	/**
+	 *  getters/setters for all the fields taken... 
+	 */
+	
+	public int getId() {
 		return id;
 	}
-
-	public void setId(String id) {
+	public String getFriendId() {
+		return friendId;
+	}
+	public void setFriendId(String friendId) {
+		this.friendId = friendId;
+	}
+	public void setId(int id) {
 		this.id = id;
 	}
-
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public String getGroup() {
-		return group;
+	public String getStatus() {
+		return status;
 	}
-
-	public void setGroup(String group) {
-		this.group = group;
+	public void setStatus(String status) {
+		this.status = status;
 	}
-	
-	
-	
 }

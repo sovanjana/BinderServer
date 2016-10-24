@@ -9,8 +9,9 @@ import com.niit.binder.model.Blog;
 @Repository		//@Repository annotation is a specialization of the @Component annotation with similar use and functionality...
 public interface BlogDAO {
 
-	// Declare all CRUD Operations...
-	
+	/**
+	 *  Declare all CRUD Operations...
+	 */	
 	public boolean save(Blog blog);
 	
 	public boolean update(Blog blog);

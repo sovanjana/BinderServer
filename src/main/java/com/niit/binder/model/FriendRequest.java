@@ -21,10 +21,12 @@ public class FriendRequest extends BaseDomain implements Serializable {
 	 */
 	private static final long serialVersionUID = 10L;
 
-	/* declare the database column names for User... */
+	/**
+	 *  declare the database column names for User... 
+	 */
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	//@GeneratedValue(strategy = GenerationType.AUTO)
 	private String id;
 	
 	@Column(name = "request_to")
@@ -33,31 +35,26 @@ public class FriendRequest extends BaseDomain implements Serializable {
 	@Column(name = "request_from")
 	private String requestFrom;
 	
-	/* getters/setters for all the fields taken... */
+	/**
+	 *  getters/setters for all the fields taken... 
+	 */
 
 	public String getId() {
 		return id;
 	}
-
 	public void setId(String id) {
 		this.id = id;
 	}
-
 	public String getRequestTo() {
 		return requestTo;
 	}
-
 	public void setRequestTo(String requestTo) {
 		this.requestTo = requestTo;
 	}
-
 	public String getRequestFrom() {
 		return requestFrom;
 	}
-
 	public void setRequestFrom(String requestFrom) {
 		this.requestFrom = requestFrom;
-	}
-	
-	
+	}	
 }
