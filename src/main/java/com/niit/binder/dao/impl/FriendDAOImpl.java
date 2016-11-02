@@ -75,58 +75,65 @@ public class FriendDAOImpl implements FriendDAO {
 	}
 	
 	@Transactional
-	public boolean saveOrUpdate(Friend friend) {
-		try {
-			log.debug("**********Starting of saveOrUpdate() method.");
-			sessionFactory.getCurrentSession().saveOrUpdate(friend);
-			log.debug("**********End of saveOrUpdate() method.");
-			return true;
-		} catch (Exception e) {
-			log.error("Error occured : " + e.getMessage());
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	@Transactional
-	public boolean delete(Friend friend) {
-		try {
-			log.debug("**********Starting of delete() method.");
-			sessionFactory.getCurrentSession().delete(friend);
-			log.debug("**********End of delete() method.");
-			return true;
-		} catch (Exception e) {
-			log.error("Error occured : " + e.getMessage());
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	@Transactional
-	public Friend get(String id) {
+	public Friend get(String userId, String friendId) {
 		log.debug("**********Starting of get() method.");
-		String hql = "from Friend where id = " + "'" + id + "'";
+		String hql = "from Friend where userId = '" + userId + "' and friendId = '" + friendId + "'";
+		log.debug("hql : " + hql);
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		
 		@SuppressWarnings("unchecked")
-		List<Friend> list = query.list();
+		List<Friend> list = (List<Friend>) query.list();
 		
-		if(list == null) {
-			return null;
-		}
-		else {
-			log.debug("**********End of get() method.");
+		if(list != null && !list.isEmpty()) {
 			return list.get(0);
 		}
+		log.debug("**********End of get() method.");
+		return null;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<Friend> list() {
-		log.debug("**********Starting of list() method.");
-		String hql = " from Friend ";
+	public List<Friend> getMyFriends(String userId) {
+		log.debug("**********Starting of getMyFriends() method.");
+		String hql = "from Friend where userId = '" + userId + "' and status = 'A'";
+		log.debug("hql : " + hql);
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
-		log.debug("**********End of list() method.");
-		return query.list();
-	}	
+		
+		@SuppressWarnings("unchecked")
+		List<Friend> list = (List<Friend>) query.list();
+		log.debug("**********End of getMyFriends() method.");
+		return list;
+	}
+	
+	@Transactional
+	public List<Friend> getNewFriendRequests(String friendId) {
+		log.debug("**********Starting of getNewFriendRequests() method.");
+		String hql = "from Friend where userId = '" + friendId + "' and status = 'N'";
+		log.debug("hql : " + hql);
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		
+		@SuppressWarnings("unchecked")
+		List<Friend> list = (List<Friend>) query.list();
+		log.debug("**********End of getNewFriendRequests() method.");
+		return list;
+	}
+	
+	@Transactional
+	public void setOnline(String userId) {
+		log.debug("**********Starting of setOnline() method.");
+		String hql = "update Friend set isOnline = 'Y' where userId = '" + userId + "'";
+		log.debug("hql : " + hql);
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.executeUpdate();
+		log.debug("**********End of setOnline() method.");
+	}
+	
+	@Transactional
+	public void setOffline(String userId) {
+		log.debug("**********Starting of setOffline() method.");
+		String hql = "update Friend set isOnline = 'N' where userId = '" + userId + "'";
+		log.debug("hql : " + hql);
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.executeUpdate();
+		log.debug("**********End of setOffline() method.");
+	}		
 }

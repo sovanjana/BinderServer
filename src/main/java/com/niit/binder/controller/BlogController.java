@@ -2,6 +2,8 @@ package com.niit.binder.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.niit.binder.dao.BlogDAO;
 import com.niit.binder.model.Blog;
+import com.niit.binder.model.Users;
 
 @RestController
 public class BlogController {
@@ -26,18 +29,7 @@ public class BlogController {
 	BlogDAO blogDAO;
 	
 	/**
-	 * ----- url's related to blog -----
-	 * 
-	 *	a. fetch all blogs : http://localhost:8081/Binder/blogs				//-----Y-----
-	 *	b. save blog : http://localhost:8081/Binder/blog/					//-----Y-----
-	 *	c. update existing blog : http://localhost:8081/Binder/blog/{id}	//-----Y-----
-	 * 	d. delete blog : http://localhost:8081/Binder/blog/{id}				//-----Y-----
-	 * 	e. fetch blog by id : http://localhost:8081/Binder/blog/{id}		//-----Y-----
-	 * 
-	 */
-	
-	/**
-	 * 	http://localhost:8081/Binder/blogs
+	 * 	http://localhost:8081/Binder/blogs			//working
 	 * @return
 	 */
 	@GetMapping(value = "/blogs")
@@ -52,14 +44,16 @@ public class BlogController {
 	}
 	
 	/**
-	 * 	http://localhost:8081/Binder/blog/
+	 * 	http://localhost:8081/Binder/blog/			//working
 	 * @param blog
 	 * @return
 	 */
 	@PostMapping(value = "/blog/")
-	public ResponseEntity<Blog> createBlog(@RequestBody Blog blog) {
+	public ResponseEntity<Blog> createBlog(@RequestBody Blog blog, HttpSession session) {
 		log.debug("**********Starting of createBlog() method.");
 		if(blogDAO.get(blog.getId()) == null) {
+			Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+			blog.setUserId(loggedInUser.getId());
 			blogDAO.save(blog);
 			log.debug("**********End of createBlog() method.");
 			return new ResponseEntity<Blog>(blog, HttpStatus.OK);
@@ -70,13 +64,13 @@ public class BlogController {
 	}
 
 	/**
-	 * 	http://localhost:8081/Binder/blog/{id}
+	 * 	http://localhost:8081/Binder/blog/{id}			//working
 	 * @param id
 	 * @param blog
 	 * @return
 	 */
 	@PutMapping(value = "/blog/{id}")
-	public ResponseEntity<Blog> updateBlog(@PathVariable("id") String id, @RequestBody Blog blog) {
+	public ResponseEntity<Blog> updateBlog(@PathVariable("id") int id, @RequestBody Blog blog) {
 		log.debug("**********Starting of updateBlog() method.");
 		if(blogDAO.get(id) == null) {
 			blog = new Blog();
@@ -90,12 +84,12 @@ public class BlogController {
 	}
 	
 	/**
-	 * 	http://localhost:8081/Binder/blog/{id}
+	 * 	http://localhost:8081/Binder/blog/{id}			//working
 	 * @param id
 	 * @return
 	 */
 	@DeleteMapping(value = "/blog/{id}")
-	public ResponseEntity<Blog> deleteBlog(@PathVariable("id") String id) {
+	public ResponseEntity<Blog> deleteBlog(@PathVariable("id") int id) {
 		log.debug("**********Starting of deleteBlog() method.");
 		Blog blog = blogDAO.get(id);
 		if(blog == null) {
@@ -110,12 +104,12 @@ public class BlogController {
 	}
 	
 	/**
-	 * 	http://localhost:8081/Binder/blog/{id}
+	 * 	http://localhost:8081/Binder/blog/{id}			//working
 	 * @param id
 	 * @return
 	 */
 	@GetMapping(value = "/blog/{id}")
-	public ResponseEntity<Blog> getBlog(@PathVariable("id") String id) {
+	public ResponseEntity<Blog> getBlog(@PathVariable("id") int id) {
 		log.debug("**********Starting of getBlog() method.");
 		Blog blog = blogDAO.get(id);
 		if(blog == null) {

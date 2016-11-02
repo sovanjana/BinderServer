@@ -2,11 +2,12 @@ package com.niit.binder.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.niit.binder.dao.JobDAO;
 import com.niit.binder.model.Job;
+import com.niit.binder.model.JobApplication;
 
 @RestController
 public class JobController {
@@ -23,36 +25,31 @@ public class JobController {
 	Logger log = Logger.getLogger(JobController.class);
 	
 	@Autowired
+	Job job;
+	
+	@Autowired
+	JobApplication jobApplication;
+	
+	@Autowired
 	JobDAO jobDAO;
 	
 	/**
-	 * ----- url's related to job -----
-	 * 
-	 *	a. fetch all jobs : http://localhost:8081/Binder/jobs				//-----Y-----
-	 *	b. save job : http://localhost:8081/Binder/job/						//-----N----- (500 internal server error)
-	 *	c. update existing job : http://localhost:8081/Binder/job/{id}		//-----Y-----
-	 * 	d. delete job : http://localhost:8081/Binder/job/{id}				//-----Y-----
-	 * 	e. fetch job by id : http://localhost:8081/Binder/job/{id}			//-----Y-----
-	 * 
-	 */
-	
-	/**
-	 * http://localhost:8081/Binder/jobs
+	 * http://localhost:8081/Binder/jobs			//working
 	 * @return
 	 */	 
 	@GetMapping(value = "/jobs")
 	public ResponseEntity<List<Job>> listJobs() {
 		log.debug("**********Starting of listJobs() method.");
-		List<Job> job = jobDAO.list();
-		if(job.isEmpty()) {
+		List<Job> jobs = jobDAO.list();
+		if(jobs.isEmpty()) {
 			return new ResponseEntity<List<Job>>(HttpStatus.NO_CONTENT);
 		}
 		log.debug("**********End of listJobs() method.");
-		return new ResponseEntity<List<Job>>(job, HttpStatus.OK);
+		return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
 	}
 	
 	/**
-	 * 	http://localhost:8081/Binder/job/
+	 * 	http://localhost:8081/Binder/job/			//working
 	 * @param job
 	 * @return
 	 */
@@ -70,13 +67,13 @@ public class JobController {
 	}
 	
 	/**
-	 * 	http://localhost:8081/Binder/job/{id}
+	 * 	http://localhost:8081/Binder/job/{id}			//working
 	 * @param id
 	 * @param job
 	 * @return
 	 */
 	@PutMapping(value = "/job/{id}")
-	public ResponseEntity<Job> updateJob(@PathVariable("id") String id, @RequestBody Job job) {
+	public ResponseEntity<Job> updateJob(@PathVariable("id") int id, @RequestBody Job job) {
 		log.debug("**********Starting of updateJob() method.");
 		if(jobDAO.get(id) == null) {
 			job = new Job();
@@ -90,32 +87,12 @@ public class JobController {
 	}
 	
 	/**
-	 * 	http://localhost:8081/Binder/job/{id}
-	 * @param id
-	 * @return
-	 */
-	@DeleteMapping(value = "/job/{id}")
-	public ResponseEntity<Job> deleteJob(@PathVariable("id") String id) {
-		log.debug("**********Starting of deleteJob() method.");
-		Job job = jobDAO.get(id);
-		if(job == null) {
-			job = new Job();
-			job.setErrorMessage("No job exist with id : " + id);
-			log.error("No job exist with id : " + id);
-			return new ResponseEntity<Job>(job, HttpStatus.NOT_FOUND);
-		}
-		jobDAO.delete(job);
-		log.debug("**********End of deleteJob() method.");
-		return new ResponseEntity<Job>(HttpStatus.OK);		
-	}
-	
-	/**
-	 * 	http://localhost:8081/Binder/job/{id}
+	 * 	http://localhost:8081/Binder/job/{id}			//working
 	 * @param id
 	 * @return
 	 */
 	@GetMapping(value = "/job/{id}")
-	public ResponseEntity<Job> getJob(@PathVariable("id") String id) {
+	public ResponseEntity<Job> getJob(@PathVariable("id") int id) {
 		log.debug("**********Starting of getJob() method.");
 		Job job = jobDAO.get(id);
 		if(job == null) {
@@ -126,6 +103,96 @@ public class JobController {
 		}
 		log.debug("**********End of getJob() method.");
 		return new ResponseEntity<Job>(job, HttpStatus.OK);
+	}	
+
+	/**
+	 * http://localhost:8081/Binder/getMyAppliedJobs/
+	 * @param httpSession
+	 * @return
+	 */
+	@GetMapping(value="/getMyAppliedJobs/")
+	public ResponseEntity<List<Job>> getMyAppliedJobs(HttpSession httpSession) {
+		log.debug("**********Starting of getMyAppliedJobs() method.");
+		String loggedInUserId = (String) httpSession.getAttribute("loggedInUserId");
+		@SuppressWarnings("unchecked")
+		List<Job> jobs = (List<Job>) jobDAO.getMyAppliedJobs(loggedInUserId);
+		log.debug("**********End of getMyAppliedJobs() method.");
+		return new ResponseEntity<List<Job>> (jobs, HttpStatus.OK);
 	}
 	
+	/**
+	 * http://localhost:8081/Binder/callForInterview/{userId}/{jobId}
+	 * @param userId
+	 * @param jobId
+	 * @return
+	 */	 
+	@PutMapping(value="/callForInterview/{userId}/{jobId}")
+	public ResponseEntity<Job> callForInterview(@PathVariable("userId") String userId, @PathVariable("jobId") String jobId) {
+		log.debug("**********Starting of callForInterview() method.");
+		jobApplication = jobDAO.get(userId, jobId);
+		jobApplication.setStatus("C");
+		if(jobDAO.updateJobApplication(jobApplication) == false) {
+			job.setErrorCode("404");
+			job.setErrorMessage("Not able to change job application status 'call for interview'...");
+			log.error("Not able to change job application status 'call for interview'...");
+		}
+		log.debug("**********End of callForInterview() method.");
+		return new ResponseEntity<Job>(job, HttpStatus.OK);
+	}
+	
+	/**
+	 * http://localhost:8081/Binder/rejectJobApplication/{userId}/{jobId}
+	 * @param userId
+	 * @param jobId
+	 * @return
+	 */
+	@PutMapping(value="/rejectJobApplication/{userId}/{jobId}")
+	public ResponseEntity<Job> rejectJobApplication(@PathVariable("userId") String userId, @PathVariable String jobId) {
+		log.debug("**********Starting of rejectJobApplication() method.");
+		jobApplication = jobDAO.get(userId, jobId);
+		jobApplication.setStatus("R");
+		if(jobDAO.updateJobApplication(jobApplication) == false) {
+			job.setErrorCode("404");
+			job.setErrorMessage("Not able to reject the application...");
+			log.error("Not able to reject the application...");
+		}
+		log.debug("**********End of rejectJobApplication() method.");
+		return new ResponseEntity<Job>(job, HttpStatus.OK);
+	}
+	
+	/**
+	 * http://localhost:8081/Binder/listVacantJobs			//working
+	 * @return
+	 */
+	@GetMapping(value = "/listVacantJobs")
+	public ResponseEntity<List<Job>> listVacantJobs() {
+		log.debug("**********Starting of listVacantJobs() method.");
+		List<Job> vacantJobs = jobDAO.listVacantJobs();
+		if(vacantJobs.isEmpty()) {
+			return new ResponseEntity<List<Job>>(HttpStatus.NO_CONTENT);
+		}
+		log.debug("**********End of listVacantJobs() method.");
+		return new ResponseEntity<List<Job>>(vacantJobs, HttpStatus.OK);
+	}
+	
+	/**
+	 * http://localhost:8081/Binder/jobApplied
+	 * @param jobApplication
+	 * @param httpSession
+	 * @return
+	 */
+	@PostMapping(value="/jobApplied")
+	public ResponseEntity<Job> applyForJob(@RequestBody JobApplication jobApplication, HttpSession httpSession) {
+		log.debug("**********Starting of applyForJob() method.");
+		
+		String loggedInUserId = (String) httpSession.getAttribute("loggedInUserId");
+		jobApplication.setUserId(loggedInUserId);
+		jobApplication.setJobId(job.getId());
+		jobApplication.setStatus("A");	// A = Applied	R = Rejected  C = Call for Interview  S = Selected
+			
+		jobDAO.applyForJob(jobApplication);
+		
+		log.debug("**********End of applyForJob() method.");
+		return new ResponseEntity<Job>(HttpStatus.OK);
+	}
 }

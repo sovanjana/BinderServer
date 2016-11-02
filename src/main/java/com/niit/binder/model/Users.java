@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Entity
-@Table
+@Table(name = "B_USER")
 @Component
 public class Users extends BaseDomain implements Serializable {
 	
@@ -42,6 +42,8 @@ public class Users extends BaseDomain implements Serializable {
 	private String phone;
 	
 	private String role;
+	
+	private String isOnline;
 	
 	private String image;
 	
@@ -95,6 +97,12 @@ public class Users extends BaseDomain implements Serializable {
 	}
 	public void setRole(String role) {
 		this.role = role;
+	}
+	public String getIsOnline() {
+		return isOnline;
+	}
+	public void setIsOnline(String isOnline) {
+		this.isOnline = isOnline;
 	}
 	public String getImage() {
 		return image;

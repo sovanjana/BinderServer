@@ -24,8 +24,8 @@ import com.niit.binder.model.Event;
 import com.niit.binder.model.Forum;
 import com.niit.binder.model.ForumComment;
 import com.niit.binder.model.Friend;
-import com.niit.binder.model.FriendRequest;
 import com.niit.binder.model.Job;
+import com.niit.binder.model.JobApplication;
 import com.niit.binder.model.Users;
 
 @Configuration
@@ -64,10 +64,10 @@ public class ApplicationContextConfig {
 		sessionBuilder.addAnnotatedClass(Chat.class);	
 		sessionBuilder.addAnnotatedClass(Event.class);	
 		sessionBuilder.addAnnotatedClass(Friend.class);	
-		sessionBuilder.addAnnotatedClass(FriendRequest.class);
 		sessionBuilder.addAnnotatedClass(Job.class);		
 		sessionBuilder.addAnnotatedClass(Forum.class);	
-		sessionBuilder.addAnnotatedClass(ForumComment.class);	
+		sessionBuilder.addAnnotatedClass(ForumComment.class);
+		sessionBuilder.addAnnotatedClass(JobApplication.class);
 		
 		return sessionBuilder.buildSessionFactory();
 	}

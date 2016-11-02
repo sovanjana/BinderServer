@@ -12,44 +12,38 @@ import javax.persistence.Table;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table(name = "B_FRIEND")
+@Table(name="B_JOBAPPLICATION")
 @Component
-public class Friend extends BaseDomain implements Serializable{
-	
+public class JobApplication extends BaseDomain implements Serializable {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 10L;
+	private static final long serialVersionUID = 867599936475521L;
 
 	/**
-	 *  declare the database column names for User... 
+	 *  declare the database column names for JobApplication... 
 	 */
-	
 	@Id
-	@SequenceGenerator(name="SEQ_GEN", sequenceName="SEQ_AUTO_FRIEND_ID", allocationSize=1)
+	@SequenceGenerator(name="SEQ_GEN", sequenceName="SEQ_AUTO_JOB_APP_ID", allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_GEN")
 	private int id;
 	
 	private String userId;
 	
-	private String friendId;
+	private int jobId;
 	
-	private String status;	//  N = New, A = Accepted, R = Rejected
+	private String status;	// R = Reject, C = Call for Interview, S = Selected
 	
-	private String isOnline;
+	private String remarks;
 
 	/**
+	 *  
 	 *  getters/setters for all the fields taken... 
+	 *  
 	 */
-	
 	public int getId() {
 		return id;
-	}
-	public String getFriendId() {
-		return friendId;
-	}
-	public void setFriendId(String friendId) {
-		this.friendId = friendId;
 	}
 	public void setId(int id) {
 		this.id = id;
@@ -60,16 +54,24 @@ public class Friend extends BaseDomain implements Serializable{
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+	public int getJobId() {
+		return jobId;
+	}
+	public void setJobId(int jobId) {
+		this.jobId = jobId;
+	}
 	public String getStatus() {
 		return status;
 	}
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public String getIsOnline() {
-		return isOnline;
+	public String getRemarks() {
+		return remarks;
 	}
-	public void setIsOnline(String isOnline) {
-		this.isOnline = isOnline;
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
 	}
+	
+	
 }

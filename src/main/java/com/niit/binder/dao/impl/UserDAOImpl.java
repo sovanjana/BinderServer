@@ -75,51 +75,17 @@ public class UserDAOImpl implements UserDAO {
 	}
 	
 	@Transactional
-	public boolean saveOrUpdate(Users users) {
-		try {
-			log.debug("**********Starting of saveOrUpdate() method.");
-			sessionFactory.getCurrentSession().saveOrUpdate(users);
-			log.debug("**********End of saveOrUpdate() method.");
-			return true;
-		} catch (Exception e) {
-			log.error("Error occured : " + e.getMessage());
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	@Transactional
-	public boolean delete(Users users) {
-		try {
-			log.debug("**********Starting of delete() method.");
-			sessionFactory.getCurrentSession().delete(users);
-			log.debug("**********End of delete() method.");
-			return true;
-		} catch (Exception e) {
-			log.error("Error occured : " + e.getMessage());
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	@Transactional
 	public Users get(String id) {
 		log.debug("**********Starting of get() method.");
 		String hql = "from Users where id = " + "'" + id + "'";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
-		
-		@SuppressWarnings("unchecked")
 		List<Users> list = (List<Users>) query.list();
-		
 		if(list != null && !list.isEmpty()) {
 			return list.get(0);
 		}
-		else {
-			return null;
-		}
+		return null;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<Users> list() {
 		log.debug("**********Starting of list() method.");
@@ -128,19 +94,38 @@ public class UserDAOImpl implements UserDAO {
 		log.debug("**********End of list() method.");
 		return query.list();
 	}	
-	
+		
 	@Transactional
 	public Users authenticate(String id, String password) {
 		log.debug("**********Starting of authenticate() method.");
 		String hql = "from Users where id = '" + id + "' and " + "password = '" + password + "'";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		
-		@SuppressWarnings("unchecked")
 		List<Users> list = (List<Users>) query.list();
 		
 		if(list != null && !list.isEmpty()) {
 			return list.get(0);
 		}
 		return null;
+	}	
+
+	@Transactional
+	public void setOnline(String id) {
+		log.debug("**********Starting of setOnline() method.");
+		String hql = "update Users set isOnline = 'Y' where Id = '" + id + "'";
+		log.debug("hql : " + hql);
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.executeUpdate();
+		log.debug("**********End of setOnline() method.");		
+	}
+	
+	@Transactional
+	public void setOffline(String id) {
+		log.debug("**********Starting of setOffline() method.");
+		String hql = "update Users set isOnline = 'N' where id = '" +id + "'";
+		log.debug("hql : " + hql);
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.executeUpdate();
+		log.debug("**********End of setOffline() method.");
 	}
 }

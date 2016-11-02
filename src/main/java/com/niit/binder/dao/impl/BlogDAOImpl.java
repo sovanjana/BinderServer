@@ -1,5 +1,6 @@
 package com.niit.binder.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -50,6 +51,10 @@ public class BlogDAOImpl implements BlogDAO {
 	public boolean save(Blog blog){
 		try {
 			log.debug("**********Starting of save() method.");
+			
+			blog.setPostDate(new Date(System.currentTimeMillis()));	//set current time as postDate
+			blog.setStatus("N");	// N = New, R = Rejected, A = Approved 
+			
 			sessionFactory.getCurrentSession().save(blog);
 			log.debug("**********End of save() method.");
 			return true;
@@ -103,7 +108,7 @@ public class BlogDAOImpl implements BlogDAO {
 	}
 	
 	@Transactional
-	public Blog get(String id) {
+	public Blog get(int id) {
 		log.debug("**********Starting of get() method.");
 		String hql = "from Blog where id = " + "'" + id + "'";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);

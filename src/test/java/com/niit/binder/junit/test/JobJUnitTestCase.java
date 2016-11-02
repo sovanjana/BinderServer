@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.apache.log4j.Logger;
 import org.junit.Before;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -38,12 +39,16 @@ public class JobJUnitTestCase {
 	public void listJob() {
 		log.debug("Starting of listJob() method...........");
 		
-		assertEquals(jobDAO.list().size(), 2);
+		assertEquals(jobDAO.list().size(), 10);
 	}	
 	
 	//@Test
 	public void addJob() {
 		log.debug("Starting of addJob() method...........");
+		
+		job.setCompanyName("Cisco India");
+		job.setLocation("Bangalore");
+		job.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmo.");
 		
 		assertEquals(jobDAO.save(job), true);
 	}
@@ -53,14 +58,6 @@ public class JobJUnitTestCase {
 		log.debug("Starting of updateJob() method...........");
 		
 		assertEquals(jobDAO.update(job), true);
-	}
-	
-	//@Test
-	public void deleteJob() {
-		log.debug("Starting of deleteJob() method...........");
-		
-		job.setId("prantik001");
-		assertEquals(jobDAO.delete(job), true);
 	}
 	
 	//@Test

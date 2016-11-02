@@ -3,7 +3,6 @@ package com.niit.binder.junit.test;
 import static org.junit.Assert.assertEquals;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggerFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,19 +43,18 @@ public class BlogJUnitTestCase {
 		
 	//@Test
 	public void addBlog() {
-		blog.setId("blog001");
-		blog.setTitle("#1 Blog");
+		//blog.setId(3);
+		blog.setTitle("#7 Blog");
 		blog.setReason("Testing purpose");
-		blog.setContent("This is my first blog...");
-		blog.setUserId("sovan001");
-		blog.setStatus("approved");
+		blog.setContent("This is my seventh blog...");
+		blog.setUserId("sudip001");
 		
 		assertEquals(blogDAO.save(blog), true);
 	}
 	
 	//@Test
 	public void updateBlog() {
-		blog.setId("arpan001");
+		//blog.setId("arpan001");
 		blog.setTitle("#1 Blog");
 		blog.setContent("This is my first blog...");
 		blog.setUserId("sovan001");
@@ -67,7 +65,7 @@ public class BlogJUnitTestCase {
 	
 	//@Test
 	public void deleteBlog() {
-		blog.setId("blog002");
+		blog.setId(1);
 		
 		assertEquals(blogDAO.delete(blog), true);
 	}
@@ -75,6 +73,6 @@ public class BlogJUnitTestCase {
 	//@Test
 	public void getBlog() {
 		
-		assertEquals(blogDAO.get("blog001").getTitle(), "#1 Blog");
+		//assertEquals(blogDAO.get("blog001").getTitle(), "#1 Blog");
 	}
 }

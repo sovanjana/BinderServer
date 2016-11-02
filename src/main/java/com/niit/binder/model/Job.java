@@ -5,27 +5,32 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table(name = "b_job")
+@Table(name = "B_JOB")
 @Component
 public class Job extends BaseDomain implements Serializable{
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 10L;
-	
+	private static final long serialVersionUID = 4491280002140917397L;
+
 	/**
 	 *  declare the database column names for Job... 
 	 */
 
 	@Id
-	private String id;
+	@SequenceGenerator(name="SEQ_GEN", sequenceName="SEQ_AUTO_JOB_ID", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_GEN")
+	private int id;
 	
 	@Column(name = "company_name")
 	private String companyName;
@@ -37,16 +42,20 @@ public class Job extends BaseDomain implements Serializable{
 	@Column(name = "post_date")
 	private Date date;
 	
+	private String status;
+	
+	private int noOfApplicants;
+	
 	/**
 	 *  
 	 *  getters/setters for all the fields taken... 
 	 *  
 	 */
-
-	public String getId() {
+	
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getCompanyName() {
@@ -73,5 +82,17 @@ public class Job extends BaseDomain implements Serializable{
 	public void setDate(Date date) {
 		this.date = date;
 	}
-		
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public int getNoOfApplicants() {
+		return noOfApplicants;
+	}
+	public void setNoOfApplicants(int noOfApplicants) {
+		this.noOfApplicants = noOfApplicants;
+	}
+	
 }

@@ -11,15 +11,13 @@ public interface FriendDAO {
 
 	// Declare all CRUD Operations...
 	
-	public boolean save(Friend friend);
+	public boolean save(Friend friend);						//implemented...
+	public boolean update(Friend friend);					//implemented...
+			
+	public Friend get(String userId, String friendId);		//implemented
+	public List<Friend> getMyFriends(String userId);		//implemented...
+	public List<Friend> getNewFriendRequests(String userId);//implemented...
 	
-	public boolean update(Friend friend);
-	
-	public boolean saveOrUpdate(Friend friend);
-			
-	public boolean delete(Friend friend);
-			
-	public Friend get(String id);
-			
-	public List<Friend> list();
+	public void setOnline(String userId);					//implemented...
+	public void setOffline(String userId);					//implemented...
 }

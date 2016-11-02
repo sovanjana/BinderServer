@@ -1,15 +1,18 @@
 package com.niit.binder.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
+
 
 @Entity
 @Table(name = "b_blog")
@@ -26,8 +29,9 @@ public class Blog extends BaseDomain implements Serializable {
 	 */
 	
 	@Id
-	//@GeneratedValue(strategy=GenerationType.AUTO)
-	private String id;
+	@SequenceGenerator(name="SEQ_GEN", sequenceName="SEQ_AUTO_BLOG_ID", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_GEN")
+	private int id;
 	
 	private String title;
 	
@@ -36,7 +40,7 @@ public class Blog extends BaseDomain implements Serializable {
 	private String content;
 	
 	@Column(name = "post_date")
-	private Timestamp postDate;
+	private Date postDate;
 	
 	private String userId;
 		
@@ -46,17 +50,17 @@ public class Blog extends BaseDomain implements Serializable {
 	 *  getters/setters for all the fields taken... 
 	 */
 
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	public String getTitle() {
 		return title;
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	public String getContent() {
 		return content;
@@ -71,13 +75,11 @@ public class Blog extends BaseDomain implements Serializable {
 		this.reason = reason;
 	}
 	public Date getPostDate() {
-		Date date = new Date();
-		date.toString();
 		return postDate;
 	}
-	/*public void setPostDate(Date postDate) {
+	public void setPostDate(Date postDate) {
 		this.postDate = postDate;
-	}*/
+	}
 	public String getStatus() {
 		return status;
 	}

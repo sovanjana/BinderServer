@@ -70,12 +70,6 @@ public class UserJUnitTestCase {
 		assertEquals(userDAO.update(users), true);
 	}
 	
-	//@Test
-	public void deleteUser() {
-		users.setId("prantik001");
-		
-		assertEquals(userDAO.delete(users), true);
-	}
 	
 	//@Test
 	public void getUser() {
