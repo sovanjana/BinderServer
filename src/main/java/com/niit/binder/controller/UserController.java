@@ -17,12 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.niit.binder.dao.FriendDAO;
 import com.niit.binder.dao.UserDAO;
+import com.niit.binder.model.Friend;
 import com.niit.binder.model.Users;
 
 @RestController
 public class UserController {
 
 	Logger log = Logger.getLogger(UserController.class);
+	
+	@Autowired
+	Users users;
 	
 	@Autowired
 	UserDAO userDAO;
@@ -114,6 +118,7 @@ public class UserController {
 		users = userDAO.authenticate(users.getId(), users.getPassword());
 		if(users == null) {
 			users = new Users();	//we need to create new users object to set errorMsg and errorCode...
+			users.setErrorCode("404");
 			users.setErrorMessage("Invalid userId or password...");
 			log.error("Invalid userId or password...");
 		}
@@ -134,7 +139,7 @@ public class UserController {
 	 * @return
 	 */
 	@GetMapping(value = "/user/logout")
-	public ResponseEntity<Users> logout(@RequestBody Users users, HttpSession session) {
+	public ResponseEntity<Users> logout(/*@RequestBody Users users, */HttpSession session) {
 		log.debug("**********Starting of logout() method.");
 		friendDAO.setOffline(users.getId());
 		userDAO.setOffline(users.getId());
@@ -143,6 +148,19 @@ public class UserController {
 		log.debug("**********End of logout() method.");
 		return new ResponseEntity<Users> (HttpStatus.OK);
 	}
+	
+	/*@GetMapping(value = "/user/logout")
+	public String logout(HttpSession session) {
+		log.debug("**********Starting of logout() method.");
+		friendDAO.setOffline(users.getId());
+		userDAO.setOffline(users.getId());
+		
+		session.invalidate();
+		
+		log.debug("**********End of logout() method.");
+		return ("You have successfully logged_out.");
+	}*/
+	
 }
 
 
