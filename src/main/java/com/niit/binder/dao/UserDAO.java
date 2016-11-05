@@ -20,4 +20,5 @@ public interface UserDAO {
 	
 	public void setOnline(String id);						//implemented
 	public void setOffline(String id);						//implemented	
+	
 }
