@@ -1,5 +1,6 @@
 package com.niit.binder.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -120,5 +121,39 @@ public class BlogController {
 		}
 		log.debug("**********End of getBlog() method.");
 		return new ResponseEntity<Blog>(blog, HttpStatus.OK);
-	}	
+	}
+		
+	
+	/**
+	 * http://localhost:8081/Binder/approveBlog/{id}
+	 * @param id
+	 * @param blog
+	 * @return
+	 */
+	@PutMapping(value = "/approveBlog/{id}")				
+	public ResponseEntity<Blog> approveBlog(@RequestBody Blog blog, @PathVariable("id") int id) {
+		log.debug("**********Starting of approveBlog() method.");
+		
+		blog.setStatus("A");	// A = Accept, R = Reject, N = New
+		blogDAO.update(blog);
+		
+		log.debug("**********End of approveBlog() method.");
+		return new ResponseEntity<Blog> (blog, HttpStatus.OK);
+	}
+	/**
+	 * http://localhost:8081/Binder/rejectBlog/{id}
+	 * @param id
+	 * @param blog
+	 * @return
+	 */
+	@PutMapping(value = "/rejectBlog/{id}")				
+	public ResponseEntity<Blog> rejectBlog(@PathVariable("id") int id, @RequestBody Blog blog) {
+		log.debug("**********Starting of rejectBlog() method.");
+		
+		blog.setStatus("R");	// A = Accept, R = Reject, N = New
+		blogDAO.update(blog);
+		
+		log.debug("**********End of rejectBlog() method.");
+		return new ResponseEntity<Blog> (blog, HttpStatus.OK);
+	}
 }

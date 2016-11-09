@@ -25,11 +25,14 @@ public class UserController {
 
 	Logger log = Logger.getLogger(UserController.class);
 	
-	@Autowired
-	Users users;
+	//@Autowired
+	//Users users;
 	
 	@Autowired
 	UserDAO userDAO;
+	
+	@Autowired
+	Friend friend;
 	
 	@Autowired
 	FriendDAO friendDAO;
@@ -125,6 +128,7 @@ public class UserController {
 		else {
 			session.setAttribute("loggedInUser", users);
 			session.setAttribute("loggedInUserID", users.getId());
+			
 			friendDAO.setOnline(users.getId());
 			userDAO.setOnline(users.getId());
 		}
@@ -139,27 +143,20 @@ public class UserController {
 	 * @return
 	 */
 	@GetMapping(value = "/user/logout")
-	public ResponseEntity<Users> logout(/*@RequestBody Users users, */HttpSession session) {
+	public ResponseEntity<Users> logout(HttpSession session) {
 		log.debug("**********Starting of logout() method.");
-		friendDAO.setOffline(users.getId());
-		userDAO.setOffline(users.getId());
+		
+	String userId = (String) session.getAttribute("loggedInUserID");
+		
+		log.debug("**********"+userId+"**********");
+		
+		friendDAO.setOffline(userId);
+		userDAO.setOffline(userId);
 		
 		session.invalidate();
 		log.debug("**********End of logout() method.");
 		return new ResponseEntity<Users> (HttpStatus.OK);
 	}
-	
-	/*@GetMapping(value = "/user/logout")
-	public String logout(HttpSession session) {
-		log.debug("**********Starting of logout() method.");
-		friendDAO.setOffline(users.getId());
-		userDAO.setOffline(users.getId());
-		
-		session.invalidate();
-		
-		log.debug("**********End of logout() method.");
-		return ("You have successfully logged_out.");
-	}*/
 	
 }
 

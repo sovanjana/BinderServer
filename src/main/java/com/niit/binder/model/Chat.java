@@ -4,13 +4,16 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table(name = "b_chat")
+@Table(name = "B_CHAT")
 @Component
 public class Chat extends BaseDomain implements Serializable {
 
@@ -24,6 +27,8 @@ public class Chat extends BaseDomain implements Serializable {
 	 */
 
 	@Id
+	@SequenceGenerator(name="SEQ_GEN", sequenceName="SEQ_AUTO_CHAT_ID", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_GEN")
 	private String id;
 	
 	private String senderId;

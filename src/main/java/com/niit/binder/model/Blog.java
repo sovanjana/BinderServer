@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 
 @Entity
-@Table(name = "b_blog")
+@Table(name = "B_BLOG")
 @Component
 public class Blog extends BaseDomain implements Serializable {
 

@@ -15,8 +15,6 @@ public interface ChatDAO {
 	
 	public boolean update(Chat chat);
 	
-	public boolean saveOrUpdate(Chat chat);
-	
 	public boolean delete(Chat chat);
 	
 	public Chat get(String id);
