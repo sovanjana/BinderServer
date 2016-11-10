@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.niit.binder.dao.FriendDAO;
 import com.niit.binder.model.Friend;
-import com.niit.binder.model.Users;
 
 @RestController
 public class FriendController {
@@ -30,11 +30,11 @@ public class FriendController {
 	FriendDAO friendDAO;
 	
 	/**
-	 * http://localhost:8081/Binder/myFriends			//working
+	 * http://localhost:8081/Binder/user/myFriends			//working
 	 * @param session
 	 * @return
 	 */
-	@GetMapping(value = "/myFriends")
+	@GetMapping(value = "/user/myFriends")
 	public ResponseEntity<List<Friend>> myFriends(HttpSession session) {
 		log.debug("**********Starting of myFriends() method");
 		String userId = (String) session.getAttribute("loggedInUserID");
@@ -44,91 +44,95 @@ public class FriendController {
 	}
 	
 	/**
-	 * http://localhost:8081/Binder/addFriend/{friendId}			//working
+	 * http://localhost:8081/Binder/user/newFriendRequests			//working
+	 * @param session
+	 * @return
+	 */
+	@GetMapping(value = "/user/newFriendRequests")			
+	public ResponseEntity<List<Friend>> newFriendRequests(HttpSession session) {
+		log.debug("**********Starting of newFriendRequests() method");
+		String userId = (String) session.getAttribute("loggedInUserID");
+		log.debug("********** Calling newFriendRequests() method for Userid : " + userId);
+		
+		List<Friend> newRequests = friendDAO.getNewFriendRequests(userId);
+		log.debug("**********End of newFriendRequests() method");
+		return new ResponseEntity<List<Friend>> (newRequests, HttpStatus.OK);
+	}
+	
+	/**
+	 * http://localhost:8081/Binder/user/addFriend/{friendId}			//working
 	 * @param friendId
 	 * @param session
 	 * @return
 	 */
-	@PostMapping(value = "/addFriend/{friendId}")			
+	@PostMapping(value = "/user/addFriend/{friendId}")			
 	public ResponseEntity<Friend> sendFriendRequest(@PathVariable("friendId") String friendId, HttpSession session) {
 		log.debug("**********Starting of sendFriendRequest() method");
 		String userId = (String) session.getAttribute("loggedInUserID");
+		String status = (String) session.getAttribute("LoggedInStatus");
 		
 		friend.setUserId(userId);
 		friend.setFriendId(friendId);
+		friend.setIsOnline(status);
 		friend.setStatus("N");	// N = New, A = Accepted, R = Rejected, U = Unfriend 
-		friendDAO.sendFriendRequest(friend);
 		
-		log.debug("**********End of sendFriendRequest() method");
+		friendDAO.save(friend);
 		
+		log.debug("**********End of sendFriendRequest() method");		
 		return new ResponseEntity<Friend> (friend, HttpStatus.OK);
 	}
 	
 	/**
-	 * http://localhost:8081/Binder/unFriend/{friendId}	
-	 * @param friendId
+	 * http://localhost:8081/Binder/user/rejectFriend/{id}
+	 * @param id
+	 * @param friend
 	 * @param session
 	 * @return
 	 */
-	@PutMapping(value = "/unFriend/{friendId}")			
-	public ResponseEntity<Friend> unFriend(@PathVariable("friendId") String friendId, HttpSession session) {
-		log.debug("**********Starting of unFriend() method");
-		String userId = (String) session.getAttribute("loggedInUserID");
-		friend.setUserId(userId);
-		friend.setFriendId(friendId);
-		friend.setStatus("U");	// N = New, A = Accepted, R = Rejected, U = Unfriend 
-		friendDAO.update(friend);
-		log.debug("**********End of unFriend() method");
-		return new ResponseEntity<Friend> (friend, HttpStatus.OK);
-	}
-	
-	/**
-	 * http://localhost:8081/Binder/rejectFriend/{friendId}
-	 * @param friendId
-	 * @param session
-	 * @return
-	 */
-	@PutMapping(value = "/rejectFriend/{friendId}")				
-	public ResponseEntity<Friend> rejectFriendRequest(@PathVariable("friendId") String friendId, HttpSession session) {
+	@PutMapping(value = "/user/rejectFriend/{id}")				
+	public ResponseEntity<Friend> rejectFriendRequest(@PathVariable("id") int id, @RequestBody Friend friend, HttpSession session) {
 		log.debug("**********Starting of rejectFriendRequest() method");
-		String userId = (String) session.getAttribute("loggedInUserID");
-		friend.setUserId(userId);
-		friend.setFriendId(friendId);
-		friend.setStatus("R");	// N = New, A = Accepted, R = Rejected, U = Unfriend  
+		
+		friend.setStatus("R");	// N = New, A = Accepted, R = Rejected, U = Unfriend  						
 		friendDAO.update(friend);
+		
 		log.debug("**********End of rejectFriendRequest() method");
 		return new ResponseEntity<Friend> (friend, HttpStatus.OK);
 	}
 	
 	/**
-	 * http://localhost:8081/Binder/acceptFriend/{friendId}			//working
-	 * @param friendId
+	 * http://localhost:8081/Binder/user/acceptFriend/{id}
+	 * @param id
+	 * @param friend
 	 * @param session
 	 * @return
 	 */
-	@PutMapping(value = "/acceptFriend/{friendId}")			
-	public ResponseEntity<Friend> acceptFriendRequest(@PathVariable("friendId") String friendId, HttpSession session) {
+	@PutMapping(value = "/user/acceptFriend/{id}")			
+	public ResponseEntity<Friend> acceptFriendRequest(@PathVariable("id") int id, @RequestBody Friend friend, HttpSession session) {
 		log.debug("**********Starting of acceptFriendRequest() method");
-		String userId = (String) session.getAttribute("loggedInUserID");
-		friend.setUserId(userId);
-		friend.setFriendId(friendId);
-		friend.setStatus("A");	// N = New, A = Accepted, R = Rejected, U = Unfriend 
+		
+		friend.setStatus("A");	// N = New, A = Accepted, R = Rejected, U = Unfriend  						
 		friendDAO.update(friend);
+		
 		log.debug("**********End of acceptFriendRequest() method");
 		return new ResponseEntity<Friend> (friend, HttpStatus.OK);
-	}
+	}	
 	
 	/**
-	 * http://localhost:8081/Binder/newFriendRequests
+	 * http://localhost:8081/Binder/user/unFriend/{id}
+	 * @param id
+	 * @param friend
 	 * @param session
 	 * @return
 	 */
-	@GetMapping(value = "/newFriendRequests")			
-	public ResponseEntity<Friend> newFriendRequests(HttpSession session) {
-		log.debug("**********Starting of newFriendRequests() method");
-		String userId = (String) session.getAttribute("loggedInUserID");
-		friendDAO.getNewFriendRequests(userId);
-		log.debug("**********End of newFriendRequests() method");
-		return new ResponseEntity<Friend>(friend, HttpStatus.OK);
-	}	
+	@PutMapping(value = "/user/unFriend/{id}")			
+	public ResponseEntity<Friend> unFriend(@PathVariable("id") int id, @RequestBody Friend friend, HttpSession session) {
+		log.debug("**********Starting of unFriend() method");
+		
+		friend.setStatus("U");	// N = New, A = Accepted, R = Rejected, U = Unfriend  		
+		friendDAO.update(friend);
+		
+		log.debug("**********End of unFriend() method");
+		return new ResponseEntity<Friend> (friend, HttpStatus.OK);
+	}
 }

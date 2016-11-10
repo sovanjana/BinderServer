@@ -128,6 +128,7 @@ public class UserController {
 		else {
 			session.setAttribute("loggedInUser", users);
 			session.setAttribute("loggedInUserID", users.getId());
+			session.setAttribute("LoggedInStatus", users.getIsOnline());
 			
 			friendDAO.setOnline(users.getId());
 			userDAO.setOnline(users.getId());

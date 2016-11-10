@@ -45,14 +45,14 @@ public class Friend extends BaseDomain implements Serializable{
 	public int getId() {
 		return id;
 	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getFriendId() {
 		return friendId;
 	}
 	public void setFriendId(String friendId) {
 		this.friendId = friendId;
-	}
-	public void setId(int id) {
-		this.id = id;
 	}
 	public String getUserId() {
 		return userId;

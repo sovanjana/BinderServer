@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.niit.binder.dao.FriendDAO;
 import com.niit.binder.model.Friend;
+import com.niit.binder.model.Users;
 
 @EnableTransactionManagement
 @Repository(value="friendDAO")
@@ -46,8 +47,11 @@ public class FriendDAOImpl implements FriendDAO {
 	 *  Declare all CRUD Operations...
 	 */
 	
+	/**
+	 * used for sendFriendRequest
+	 */
 	@Transactional
-	public boolean sendFriendRequest(Friend friend){
+	public boolean save(Friend friend){
 		try {
 			log.debug("**********Starting of save() method.");
 			sessionFactory.getCurrentSession().save(friend);
@@ -74,6 +78,49 @@ public class FriendDAOImpl implements FriendDAO {
 		}
 	}
 	
+	/**
+	 * used for getting myFriends
+	 */
+	@Transactional
+	public List<Friend> getMyFriends(String userId) {
+		log.debug("**********Starting of getMyFriends() method.");
+		String hql = "from Friend where userId = '" + userId + "' and status = 'A'";
+		log.debug("**********hql : " + hql);
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		
+		@SuppressWarnings("unchecked")
+		List<Friend> list = (List<Friend>) query.list();
+		log.debug("**********End of getMyFriends() method.");
+		return list;
+	}
+	
+	/**
+	 * used for getting newFriendRequest
+	 */
+	@Transactional
+	public List<Friend> getNewFriendRequests(String userId) {
+		log.debug("**********Starting of getNewFriendRequests() method.");
+		
+		String hql = "from Friend where friendId = '" + userId + "' and status = 'N'";
+		log.debug("***********hql : " + hql);
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		
+		@SuppressWarnings("unchecked")
+		List<Friend> list = (List<Friend>) query.list();
+		log.debug("**********End of getNewFriendRequests() method.");
+		return list;
+	}
+	
+	@Transactional
+	public void rejectFriend(String userId) {
+		log.debug("**********Starting of rejectFriend() method.");
+		String hql = "update Friend set status = 'R' where friendId = '" + userId + "'";
+		log.debug("**********hql : " + hql);
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.executeUpdate();
+		log.debug("**********End of rejectFriend() method.");
+	}
+	
 	@Transactional
 	public Friend getSelectedFriend(String userId, String friendId) {
 		log.debug("**********Starting of get() method.");
@@ -89,32 +136,6 @@ public class FriendDAOImpl implements FriendDAO {
 		}
 		log.debug("**********End of get() method.");
 		return null;
-	}
-	
-	@Transactional
-	public List<Friend> getMyFriends(String userId) {
-		log.debug("**********Starting of getMyFriends() method.");
-		String hql = "from Friend where userId = '" + userId + "' and status = 'A'";
-		log.debug("hql : " + hql);
-		Query query = sessionFactory.getCurrentSession().createQuery(hql);
-		
-		@SuppressWarnings("unchecked")
-		List<Friend> list = (List<Friend>) query.list();
-		log.debug("**********End of getMyFriends() method.");
-		return list;
-	}
-	
-	@Transactional
-	public List<Friend> getNewFriendRequests(String userId) {
-		log.debug("**********Starting of getNewFriendRequests() method.");
-		String hql = "from Friend where userId = '" + userId + "' and status = 'N'";
-		log.debug("hql : " + hql);
-		Query query = sessionFactory.getCurrentSession().createQuery(hql);
-		
-		@SuppressWarnings("unchecked")
-		List<Friend> list = (List<Friend>) query.list();
-		log.debug("**********End of getNewFriendRequests() method.");
-		return list;
 	}
 	
 	@Transactional
@@ -135,5 +156,6 @@ public class FriendDAOImpl implements FriendDAO {
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		query.executeUpdate();
 		log.debug("**********End of setOffline() method.");
-	}		
+	}
+		
 }
