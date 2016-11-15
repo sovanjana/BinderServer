@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.niit.binder.dao.FriendDAO;
 import com.niit.binder.model.Friend;
-import com.niit.binder.model.Users;
 
 @EnableTransactionManagement
 @Repository(value="friendDAO")
@@ -156,6 +155,24 @@ public class FriendDAOImpl implements FriendDAO {
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		query.executeUpdate();
 		log.debug("**********End of setOffline() method.");
+	}
+	
+	@Transactional
+	public Friend get(int id) {
+		log.debug("**********Starting of get() method.");
+		String hql = "from Friend where id = '" + id + "'";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		
+		@SuppressWarnings("unchecked")
+		List<Friend> list = query.list();
+		
+		if (list != null && !list.isEmpty()) {
+			log.debug("**********End of get() method.");
+			return list.get(0);
+		}
+		else {
+			return null;
+		}
 	}
 		
 }

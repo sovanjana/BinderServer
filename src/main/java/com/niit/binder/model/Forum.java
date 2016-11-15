@@ -30,7 +30,7 @@ public class Forum extends BaseDomain implements Serializable{
 	@Id
 	@SequenceGenerator(name="SEQ_GEN", sequenceName="SEQ_AUTO_FORUM_ID", allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_GEN")
-	private String id;
+	private int id;
 	
 	private String description;
 	
@@ -46,10 +46,10 @@ public class Forum extends BaseDomain implements Serializable{
 	public Date getPostDate() {
 		return postDate;
 	}
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getUserId() {

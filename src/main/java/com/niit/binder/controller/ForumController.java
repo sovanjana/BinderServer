@@ -2,6 +2,8 @@ package com.niit.binder.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.niit.binder.dao.ForumDAO;
 import com.niit.binder.model.Forum;
+import com.niit.binder.model.Users;
 
 @RestController
 public class ForumController {
@@ -26,18 +29,7 @@ public class ForumController {
 	ForumDAO forumDAO;
 	
 	/**
-	 * ----- url's related to forum -----
-	 * 
-	 *	a. fetch all forums : http://localhost:8081/Binder/forums				//
-	 *	b. save forum : http://localhost:8081/Binder/forum/						//
-	 *	c. update existing forum : http://localhost:8081/Binder/forum/{id}		//
-	 * 	d. delete forum : http://localhost:8081/Binder/forum/{id}				//
-	 * 	e. fetch forum by id : http://localhost:8081/Binder/forum/{id}			//
-	 * 
-	 */
-	
-	/**
-	 * 	http://localhost:8081/Binder/forums
+	 * 	http://localhost:8081/Binder/forums								[working]
 	 * @return
 	 */
 	@GetMapping(value = "/forums")
@@ -52,14 +44,16 @@ public class ForumController {
 	}
 	
 	/**
-	 * 	http://localhost:8081/Binder/forum/
+	 * 	http://localhost:8081/Binder/forum/									[working]
 	 * @param forum
 	 * @return
 	 */
 	@PostMapping(value = "/forum/")
-	public ResponseEntity<Forum> createForum(@RequestBody Forum forum) {
+	public ResponseEntity<Forum> createForum(@RequestBody Forum forum, HttpSession session) {
 		log.debug("**********Starting of createForum() method.");
 		if(forumDAO.get(forum.getId()) == null) {
+			Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+			forum.setUserId(loggedInUser.getId());
 			forumDAO.save(forum);
 			log.debug("**********End of createForum() method.");
 			return new ResponseEntity<Forum>(forum, HttpStatus.OK);
@@ -70,13 +64,13 @@ public class ForumController {
 	}
 	
 	/**
-	 * 	http://localhost:8081/Binder/forum/{id}
+	 * 	http://localhost:8081/Binder/forum/{id}								[working]
 	 * @param id
 	 * @param forum
 	 * @return
 	 */
 	@PutMapping(value = "/forum/{id}")
-	public ResponseEntity<Forum> updateForum(@PathVariable("id") String id, @RequestBody Forum forum) {
+	public ResponseEntity<Forum> updateForum(@PathVariable("id") int id, @RequestBody Forum forum) {
 		log.debug("**********Starting of updateForum() method.");
 		if(forumDAO.get(id) == null) {
 			forum = new Forum();
@@ -90,12 +84,12 @@ public class ForumController {
 	}
 	
 	/**
-	 * 	http://localhost:8081/Binder/forum/{id}
+	 * 	http://localhost:8081/Binder/forum/{id}								[working]
 	 * @param id
 	 * @return
 	 */
 	@DeleteMapping(value = "/forum/{id}")
-	public ResponseEntity<Forum> deleteForum(@PathVariable("id") String id) {
+	public ResponseEntity<Forum> deleteForum(@PathVariable("id") int id) {
 		log.debug("**********Starting of deleteForum() method.");
 		Forum forum = forumDAO.get(id);
 		if(forum == null) {
@@ -110,12 +104,12 @@ public class ForumController {
 	}
 	
 	/**
-	 * 	http://localhost:8081/Binder/forum/{id}
+	 * 	http://localhost:8081/Binder/forum/{id}							[working]
 	 * @param id
 	 * @return
 	 */
 	@GetMapping(value = "/forum/{id}")
-	public ResponseEntity<Forum> getForum(@PathVariable("id") String id) {
+	public ResponseEntity<Forum> getForum(@PathVariable("id") int id) {
 		log.debug("**********Starting of getForum() method.");
 		Forum forum = forumDAO.get(id);
 		if(forum == null) {
@@ -127,5 +121,4 @@ public class ForumController {
 		log.debug("**********End of getForum() method.");
 		return new ResponseEntity<Forum>(forum, HttpStatus.OK);
 	}
-	
 }

@@ -17,6 +17,7 @@ public interface JobDAO {
 	public Job get(int id);												//implemented..	
 	public List<Job> list();											//implemented..	
 	public List<Job> listVacantJobs();									//implemented..	
+	public List<JobApplication> listJobApplications();
 	public boolean applyForJob(JobApplication jobApplication);			//implemented..	
 	public boolean updateJobApplication(JobApplication jobApplication);	//implemented..	
 	public JobApplication get(String userId, String jobId);				//implemented..	

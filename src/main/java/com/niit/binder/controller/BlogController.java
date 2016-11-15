@@ -1,6 +1,5 @@
 package com.niit.binder.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -45,8 +44,9 @@ public class BlogController {
 	}
 	
 	/**
-	 * 	http://localhost:8081/Binder/blog/			//working
+	 * http://localhost:8081/Binder/blog/			//working
 	 * @param blog
+	 * @param session
 	 * @return
 	 */
 	@PostMapping(value = "/blog/")

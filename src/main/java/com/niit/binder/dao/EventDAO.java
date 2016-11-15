@@ -13,15 +13,9 @@ public interface EventDAO {
 	 *  Declare all CRUD Operations...
 	 */
 	
-		public boolean save(Event event);
-		
-		public boolean update(Event event);
-		
-		public boolean saveOrUpdate(Event event);
-		
-		public boolean delete(Event event);
-		
-		public Event get(String id);
-		
+		public boolean save(Event event);		
+		public boolean update(Event event);		
+		public boolean delete(Event event);		
+		public Event get(int id);		
 		public List<Event> list();
 }

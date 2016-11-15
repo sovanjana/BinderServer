@@ -113,6 +113,15 @@ public class JobDAOImpl implements JobDAO {
 	}
 	
 	@Transactional
+	public List<JobApplication> listJobApplications() {
+		log.debug("**********Starting of listJobApplications() method.");
+		String hql = "from JobApplication";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		log.debug("**********End of listJobApplications() method.");
+		return query.list();
+	}
+	
+	@Transactional
 	public boolean applyForJob(JobApplication jobApplication) {
 		try {
 			log.debug("**********Starting of applyForJob() method.");

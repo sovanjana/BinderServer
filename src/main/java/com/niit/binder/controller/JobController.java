@@ -21,53 +21,66 @@ import com.niit.binder.model.JobApplication;
 
 @RestController
 public class JobController {
-	
+
 	Logger log = Logger.getLogger(JobController.class);
-	
+
 	@Autowired
 	Job job;
-	
+
 	@Autowired
 	JobApplication jobApplication;
-	
+
 	@Autowired
 	JobDAO jobDAO;
-	
+
 	/**
-	 * http://localhost:8081/Binder/jobs			//working
+	 * http://localhost:8081/Binder/jobs //working
+	 * 
 	 * @return
-	 */	 
+	 */
 	@GetMapping(value = "/jobs")
 	public ResponseEntity<List<Job>> listJobs() {
 		log.debug("**********Starting of listJobs() method.");
 		List<Job> jobs = jobDAO.list();
-		if(jobs.isEmpty()) {
+		if (jobs.isEmpty()) {
 			return new ResponseEntity<List<Job>>(HttpStatus.NO_CONTENT);
 		}
 		log.debug("**********End of listJobs() method.");
 		return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/jobApplications")
+	public ResponseEntity<List<JobApplication>> listJobApplications() {
+		log.debug("**********Starting of listJobApplications() method.");
+		
+		List<JobApplication> jobApplications = jobDAO.listJobApplications();
+		
+		log.debug("**********End of listJobApplications() method.");
+		return new ResponseEntity<List<JobApplication>>(jobApplications, HttpStatus.OK);
+	}
+
 	/**
-	 * 	http://localhost:8081/Binder/job/			//working
+	 * http://localhost:8081/Binder/job/ //working
+	 * 
 	 * @param job
 	 * @return
 	 */
 	@PostMapping(value = "/job/")
 	public ResponseEntity<Job> createJob(@RequestBody Job job) {
 		log.debug("**********Starting of createJob() method.");
-		if(jobDAO.get(job.getId()) == null) {
+		if (jobDAO.get(job.getId()) == null) {
 			jobDAO.save(job);
 			return new ResponseEntity<Job>(job, HttpStatus.OK);
 		}
 		log.error("No job exist with id : " + job.getId());
-		job.setErrorMessage("Job already exist with id : " +job.getId());
+		job.setErrorMessage("Job already exist with id : " + job.getId());
 		log.debug("**********End of createJob() method.");
 		return new ResponseEntity<Job>(HttpStatus.OK);
 	}
-	
+
 	/**
-	 * 	http://localhost:8081/Binder/job/{id}			//working
+	 * http://localhost:8081/Binder/job/{id} //working
+	 * 
 	 * @param id
 	 * @param job
 	 * @return
@@ -75,9 +88,9 @@ public class JobController {
 	@PutMapping(value = "/job/{id}")
 	public ResponseEntity<Job> updateJob(@PathVariable("id") int id, @RequestBody Job job) {
 		log.debug("**********Starting of updateJob() method.");
-		if(jobDAO.get(id) == null) {
+		if (jobDAO.get(id) == null) {
 			job = new Job();
-			job.setErrorMessage("No job exist with id : " +job.getId());
+			job.setErrorMessage("No job exist with id : " + job.getId());
 			log.error("No job exist with id : " + job.getId());
 			return new ResponseEntity<Job>(job, HttpStatus.NOT_FOUND);
 		}
@@ -85,9 +98,10 @@ public class JobController {
 		log.debug("**********End of updateJob() method.");
 		return new ResponseEntity<Job>(job, HttpStatus.OK);
 	}
-	
+
 	/**
-	 * 	http://localhost:8081/Binder/job/{id}			//working
+	 * http://localhost:8081/Binder/job/{id} //working
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -95,7 +109,7 @@ public class JobController {
 	public ResponseEntity<Job> getJob(@PathVariable("id") int id) {
 		log.debug("**********Starting of getJob() method.");
 		Job job = jobDAO.get(id);
-		if(job == null) {
+		if (job == null) {
 			job = new Job();
 			job.setErrorMessage("No job exist with id : " + id);
 			log.error("No job exist with id : " + id);
@@ -103,35 +117,38 @@ public class JobController {
 		}
 		log.debug("**********End of getJob() method.");
 		return new ResponseEntity<Job>(job, HttpStatus.OK);
-	}	
+	}
 
 	/**
 	 * http://localhost:8081/Binder/getMyAppliedJobs/
+	 * 
 	 * @param httpSession
 	 * @return
 	 */
-	@GetMapping(value="/getMyAppliedJobs/")
+	@GetMapping(value = "/getMyAppliedJobs/")
 	public ResponseEntity<List<Job>> getMyAppliedJobs(HttpSession httpSession) {
 		log.debug("**********Starting of getMyAppliedJobs() method.");
 		String loggedInUserId = (String) httpSession.getAttribute("loggedInUserId");
 		@SuppressWarnings("unchecked")
 		List<Job> jobs = (List<Job>) jobDAO.getMyAppliedJobs(loggedInUserId);
 		log.debug("**********End of getMyAppliedJobs() method.");
-		return new ResponseEntity<List<Job>> (jobs, HttpStatus.OK);
+		return new ResponseEntity<List<Job>>(jobs, HttpStatus.OK);
 	}
-	
+
 	/**
 	 * http://localhost:8081/Binder/callForInterview/{userId}/{jobId}
 	 * @param userId
 	 * @param jobId
+	 * @param jobApplication
 	 * @return
-	 */	 
-	@PutMapping(value="/callForInterview/{userId}/{jobId}")
-	public ResponseEntity<Job> callForInterview(@PathVariable("userId") String userId, @PathVariable("jobId") String jobId) {
+	 */
+	@PutMapping(value = "/callForInterview/{userId}/{jobId}")
+	public ResponseEntity<Job> callForInterview(@PathVariable("userId") String userId,
+			@PathVariable("jobId") String jobId, @RequestBody JobApplication jobApplication) {
 		log.debug("**********Starting of callForInterview() method.");
 		jobApplication = jobDAO.get(userId, jobId);
 		jobApplication.setStatus("C");
-		if(jobDAO.updateJobApplication(jobApplication) == false) {
+		if (jobDAO.updateJobApplication(jobApplication) == false) {
 			job.setErrorCode("404");
 			job.setErrorMessage("Not able to change job application status 'call for interview'...");
 			log.error("Not able to change job application status 'call for interview'...");
@@ -139,19 +156,21 @@ public class JobController {
 		log.debug("**********End of callForInterview() method.");
 		return new ResponseEntity<Job>(job, HttpStatus.OK);
 	}
-	
+
 	/**
 	 * http://localhost:8081/Binder/rejectJobApplication/{userId}/{jobId}
 	 * @param userId
 	 * @param jobId
+	 * @param jobApplication
 	 * @return
 	 */
-	@PutMapping(value="/rejectJobApplication/{userId}/{jobId}")
-	public ResponseEntity<Job> rejectJobApplication(@PathVariable("userId") String userId, @PathVariable String jobId) {
+	@PutMapping(value = "/rejectJobApplication/{userId}/{jobId}")
+	public ResponseEntity<Job> rejectJobApplication(@PathVariable("userId") String userId,
+			@PathVariable("jobId") String jobId, @RequestBody JobApplication jobApplication) {
 		log.debug("**********Starting of rejectJobApplication() method.");
 		jobApplication = jobDAO.get(userId, jobId);
 		jobApplication.setStatus("R");
-		if(jobDAO.updateJobApplication(jobApplication) == false) {
+		if (jobDAO.updateJobApplication(jobApplication) == false) {
 			job.setErrorCode("404");
 			job.setErrorMessage("Not able to reject the application...");
 			log.error("Not able to reject the application...");
@@ -159,39 +178,41 @@ public class JobController {
 		log.debug("**********End of rejectJobApplication() method.");
 		return new ResponseEntity<Job>(job, HttpStatus.OK);
 	}
-	
+
 	/**
-	 * http://localhost:8081/Binder/listVacantJobs			//working
+	 * http://localhost:8081/Binder/listVacantJobs //working
+	 * 
 	 * @return
 	 */
 	@GetMapping(value = "/listVacantJobs")
 	public ResponseEntity<List<Job>> listVacantJobs() {
 		log.debug("**********Starting of listVacantJobs() method.");
 		List<Job> vacantJobs = jobDAO.listVacantJobs();
-		if(vacantJobs.isEmpty()) {
+		if (vacantJobs.isEmpty()) {
 			return new ResponseEntity<List<Job>>(HttpStatus.NO_CONTENT);
 		}
 		log.debug("**********End of listVacantJobs() method.");
 		return new ResponseEntity<List<Job>>(vacantJobs, HttpStatus.OK);
 	}
-	
+
 	/**
 	 * http://localhost:8081/Binder/jobApplied
+	 * 
 	 * @param jobApplication
 	 * @param httpSession
 	 * @return
 	 */
-	@PostMapping(value="/jobApplied")
+	@PostMapping(value = "/jobApplied")
 	public ResponseEntity<Job> applyForJob(@RequestBody JobApplication jobApplication, HttpSession httpSession) {
 		log.debug("**********Starting of applyForJob() method.");
-		
+
 		String loggedInUserId = (String) httpSession.getAttribute("loggedInUserId");
 		jobApplication.setUserId(loggedInUserId);
 		jobApplication.setJobId(job.getId());
-		jobApplication.setStatus("A");	// A = Applied	R = Rejected  C = Call for Interview  S = Selected
-			
+		jobApplication.setStatus("A"); // A = Applied ||R = Rejected ||C = Call for Interview 
+
 		jobDAO.applyForJob(jobApplication);
-		
+
 		log.debug("**********End of applyForJob() method.");
 		return new ResponseEntity<Job>(HttpStatus.OK);
 	}

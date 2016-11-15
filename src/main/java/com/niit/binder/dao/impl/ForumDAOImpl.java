@@ -1,5 +1,6 @@
 package com.niit.binder.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -50,6 +51,8 @@ public class ForumDAOImpl implements ForumDAO {
 	public boolean save(Forum forum){
 		try {
 			log.debug("**********Starting of save() method.");
+			forum.setPostDate(new Date(System.currentTimeMillis()));
+			
 			sessionFactory.getCurrentSession().save(forum);
 			log.debug("**********End of save() method.");
 			return true;
@@ -103,9 +106,9 @@ public class ForumDAOImpl implements ForumDAO {
 	}
 	
 	@Transactional
-	public Forum get(String id) {
+	public Forum get(int id) {
 		log.debug("**********Starting of get() method.");
-		String hql = "from Forum where id = " + "'" + id + "'";
+		String hql = "from Forum where id = '" + id + "'";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		
 		@SuppressWarnings("unchecked")

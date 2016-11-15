@@ -44,6 +44,19 @@ public class FriendController {
 	}
 	
 	/**
+	 * http://localhost:8081/Binder/user/friend/{id}
+	 * @param id
+	 * @return
+	 */
+	@GetMapping(value = "/user/friend/{id}")
+	public ResponseEntity<Friend> getFriend(@PathVariable("id") int id) {
+		log.debug("**********Starting of getFriend() method.");
+		Friend friend = friendDAO.get(id);
+		log.debug("**********End of getFriend() method.");
+		return new ResponseEntity<Friend>(friend, HttpStatus.OK);
+	}
+	
+	/**
 	 * http://localhost:8081/Binder/user/newFriendRequests			//working
 	 * @param session
 	 * @return

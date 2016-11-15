@@ -1,5 +1,6 @@
 package com.niit.binder.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -50,6 +51,8 @@ public class EventDAOImpl implements EventDAO {
 	public boolean save(Event event){
 		try {
 			log.debug("***********Starting of save() method.");
+			event.setDate(new Date(System.currentTimeMillis()));
+			
 			sessionFactory.getCurrentSession().save(event);
 			log.debug("***********End of save() method.");
 			return true;
@@ -75,20 +78,6 @@ public class EventDAOImpl implements EventDAO {
 	}
 	
 	@Transactional
-	public boolean saveOrUpdate(Event event) {
-		try {
-			log.debug("***********Starting of saveOrUpdate() method.");
-			sessionFactory.getCurrentSession().saveOrUpdate(event);
-			log.debug("***********End of saveOrUpdate() method.");
-			return true;
-		} catch (Exception e) {
-			log.error("Error occured : " + e.getMessage());
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	@Transactional
 	public boolean delete(Event event) {
 		try {
 			log.debug("***********Starting of delete() method.");
@@ -103,7 +92,7 @@ public class EventDAOImpl implements EventDAO {
 	}
 	
 	@Transactional
-	public Event get(String id) {
+	public Event get(int id) {
 		log.debug("***********Starting of get() method.");
 		String hql = "from Event where id = " + "'" + id + "'";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);

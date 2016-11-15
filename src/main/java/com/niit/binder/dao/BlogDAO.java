@@ -10,8 +10,10 @@ import com.niit.binder.model.Blog;
 public interface BlogDAO {
 
 	/**
-	 *  Declare all CRUD Operations...
-	 */	
+	 * Declare all CRUD Operations...
+	 * 
+	 */	   
+	 	
 	public boolean save(Blog blog);
 	
 	public boolean update(Blog blog);
