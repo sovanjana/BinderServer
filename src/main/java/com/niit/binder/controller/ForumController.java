@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.niit.binder.dao.ForumDAO;
 import com.niit.binder.model.Forum;
+import com.niit.binder.model.ForumComment;
 import com.niit.binder.model.Users;
 
 @RestController
@@ -60,7 +61,7 @@ public class ForumController {
 		}
 		forum.setErrorMessage("Forum already exist with id : " +forum.getId());
 		log.error("Forum already exist with id : " +forum.getId());
-		return new ResponseEntity<Forum>(HttpStatus.OK);
+		return new ResponseEntity<Forum>(forum, HttpStatus.OK);
 	}
 	
 	/**
@@ -120,5 +121,64 @@ public class ForumController {
 		}
 		log.debug("**********End of getForum() method.");
 		return new ResponseEntity<Forum>(forum, HttpStatus.OK);
+	}
+	
+	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|Forum Comment Area|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+	
+	/**
+	 * http://localhost:8081/Binder/forumComments						[working]
+	 * @return
+	 */
+	@GetMapping(value = "/forumComments")
+	public ResponseEntity<List<ForumComment>> listForumComments() {
+		log.debug("**********Starting of listForumComments() method.");
+		List<ForumComment> forumComment = forumDAO.listComment();
+		if(forumComment.isEmpty()) {
+			return new ResponseEntity<List<ForumComment>>(HttpStatus.NO_CONTENT);
+		}
+		log.debug("**********End of listForumComments() method.");
+		return new ResponseEntity<List<ForumComment>>(forumComment, HttpStatus.OK);
+	}
+	
+	/**
+	 * http://localhost:8081/Binder/forumComment/					[working]
+	 * @param forumComment
+	 * @param session
+	 * @return
+	 */
+	@PostMapping(value = "/forumComment/")
+	public ResponseEntity<ForumComment> createForumComment(@RequestBody ForumComment forumComment, HttpSession session) {
+		log.debug("**********Starting of createForumComment() method.");
+		if(forumDAO.getComment(forumComment.getId()) == null) {
+			Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+			forumComment.setUserId(loggedInUser.getId());
+			
+			forumDAO.saveComment(forumComment);
+			log.debug("**********End of createForumComment() method.");
+			return new ResponseEntity<ForumComment>(forumComment, HttpStatus.OK);
+		}
+		forumComment.setErrorMessage("ForumComment already exist with id : " +forumComment.getId());
+		log.error("ForumComment already exist with id : " +forumComment.getId());
+		return new ResponseEntity<ForumComment>(forumComment, HttpStatus.OK);
+	}
+	
+	/**
+	 * http://localhost:8081/Binder/forumComment/{id}							[working]
+	 * @param id
+	 * @return
+	 */
+	@GetMapping(value = "/forumComment/{id}")
+	public ResponseEntity<ForumComment> getForumComment(@PathVariable("id") int id) {
+		log.debug("**********Starting of getForumComment() method.");
+		ForumComment forumComment = forumDAO.getComment(id);
+		if(forumComment == null) {
+			forumComment = new ForumComment();
+			forumComment.setErrorMessage("No getForumComment exist with id : " + id);
+			log.error("No getForumComment exist with id : " + id);
+			return new ResponseEntity<ForumComment>(forumComment, HttpStatus.NOT_FOUND);
+		}
+		log.debug("**********End of getForumComment() method.");
+		return new ResponseEntity<ForumComment>(forumComment, HttpStatus.OK);
 	}
 }

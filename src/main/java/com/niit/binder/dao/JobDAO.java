@@ -13,13 +13,19 @@ public interface JobDAO {
 	// Declare all CRUD Operations...
 	
 	public boolean save(Job job);										//implemented..	
+	
 	public boolean update(Job job);										//implemented..	
+	
 	public Job get(int id);												//implemented..	
+	
 	public List<Job> list();											//implemented..	
 	public List<Job> listVacantJobs();									//implemented..	
+	
 	public List<JobApplication> listJobApplications();
+	
 	public boolean applyForJob(JobApplication jobApplication);			//implemented..	
 	public boolean updateJobApplication(JobApplication jobApplication);	//implemented..	
+	
 	public JobApplication get(String userId, String jobId);				//implemented..	
 	public JobApplication getMyAppliedJobs(String userId);				//implemented..	
 }

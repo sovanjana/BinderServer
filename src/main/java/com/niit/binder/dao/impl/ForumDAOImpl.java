@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.niit.binder.dao.ForumDAO;
 import com.niit.binder.model.Forum;
+import com.niit.binder.model.ForumComment;
 
 @EnableTransactionManagement
 @Repository(value="forumDAO")
@@ -48,7 +49,7 @@ public class ForumDAOImpl implements ForumDAO {
 	 */
 	
 	@Transactional
-	public boolean save(Forum forum){
+	public boolean save(Forum forum){				//working
 		try {
 			log.debug("**********Starting of save() method.");
 			forum.setPostDate(new Date(System.currentTimeMillis()));
@@ -64,7 +65,7 @@ public class ForumDAOImpl implements ForumDAO {
 	}
 	
 	@Transactional
-	public boolean update(Forum forum){
+	public boolean update(Forum forum){				//working
 		try {
 			log.debug("**********Starting of update() method.");
 			sessionFactory.getCurrentSession().update(forum);
@@ -78,21 +79,7 @@ public class ForumDAOImpl implements ForumDAO {
 	}
 	
 	@Transactional
-	public boolean saveOrUpdate(Forum forum) {
-		try {
-			log.debug("**********Starting of saveOrUpdate() method.");
-			sessionFactory.getCurrentSession().saveOrUpdate(forum);
-			log.debug("**********End of saveOrUpdate() method.");
-			return true;
-		} catch (Exception e) {
-			log.error("Error occured : " + e.getMessage());
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	@Transactional
-	public boolean delete(Forum forum) {
+	public boolean delete(Forum forum) {				//working
 		try {
 			log.debug("**********Starting of delete() method.");
 			sessionFactory.getCurrentSession().delete(forum);
@@ -106,7 +93,7 @@ public class ForumDAOImpl implements ForumDAO {
 	}
 	
 	@Transactional
-	public Forum get(int id) {
+	public Forum get(int id) {								//working
 		log.debug("**********Starting of get() method.");
 		String hql = "from Forum where id = '" + id + "'";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
@@ -125,11 +112,55 @@ public class ForumDAOImpl implements ForumDAO {
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<Forum> list() {
+	public List<Forum> list() {									//working
 		log.debug("**********Starting of list() method.");
 		String hql = " from Forum ";
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		log.debug("**********End of list() method.");
 		return query.list();
+	}
+	
+	@Transactional
+	public boolean saveComment(ForumComment forumComment) {
+		try {
+			log.debug("**********Starting of saveComment() method.");
+			forumComment.setCommentDate(new Date(System.currentTimeMillis()));
+			
+			sessionFactory.getCurrentSession().save(forumComment);
+			log.debug("**********End of saveComment() method.");
+			return true;
+		} catch (Exception e) {
+			log.error("Error occured : " + e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")				//working
+	@Transactional
+	public List<ForumComment> listComment() {
+		log.debug("**********Starting of listComment() method.");
+		String hql = " from ForumComment ";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		log.debug("**********End of listComment() method.");
+		return query.list();
+	}
+	
+	@Transactional
+	public ForumComment getComment(int id) {						//working
+		log.debug("**********Starting of getComment() method.");
+		String hql = "from ForumComment where id = '" + id + "'";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		
+		@SuppressWarnings("unchecked")
+		List<ForumComment> list = query.list();
+		
+		if(list != null && !list.isEmpty()) {
+			log.debug("**********End of getComment() method.");
+			return list.get(0);
+		}
+		else {
+			return null;
+		}
 	}	
 }
