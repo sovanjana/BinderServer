@@ -26,5 +26,5 @@ public interface ForumDAO {
 	public ForumComment getComment(int id);			//forumComment
 	
 	public List<Forum> list();	
-	public List<ForumComment> listComment();		//forumComment
+	public List<ForumComment> listComment(String id);		//forumComment
 }

@@ -32,7 +32,7 @@ public class ForumComment extends BaseDomain implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_GEN")
 	private int id;
 	
-	private String forumId;
+	private int forumId;
 		
 	@Column(name = "forum_comment")
 	private String comment;
@@ -55,10 +55,10 @@ public class ForumComment extends BaseDomain implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getForumId() {
+	public int getForumId() {
 		return forumId;
 	}
-	public void setForumId(String forumId) {
+	public void setForumId(int forumId) {
 		this.forumId = forumId;
 	}
 	public String getComment() {

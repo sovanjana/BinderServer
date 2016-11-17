@@ -83,7 +83,7 @@ public class FriendDAOImpl implements FriendDAO {
 	@Transactional
 	public List<Friend> getMyFriends(String userId) {
 		log.debug("**********Starting of getMyFriends() method.");
-		String hql = "from Friend where userId = '" + userId + "' and status = 'A'";
+		String hql = "from Friend where userId = '" + userId + "' and status = 'A' or friendId = '" + userId + "' and status = 'A'";
 		log.debug("**********hql : " + hql);
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		
@@ -100,7 +100,7 @@ public class FriendDAOImpl implements FriendDAO {
 	public List<Friend> getNewFriendRequests(String userId) {
 		log.debug("**********Starting of getNewFriendRequests() method.");
 		
-		String hql = "from Friend where friendId = '" + userId + "' and status = 'N'";
+		String hql = "from Friend where friendId = '" + userId + "' and status = 'N' or userId = '" + userId + "' and status = 'N'";
 		log.debug("***********hql : " + hql);
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		

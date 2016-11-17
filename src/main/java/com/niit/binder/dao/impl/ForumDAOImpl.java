@@ -138,9 +138,10 @@ public class ForumDAOImpl implements ForumDAO {
 	
 	@SuppressWarnings("unchecked")				//working
 	@Transactional
-	public List<ForumComment> listComment() {
+	public List<ForumComment> listComment(String  id) {
 		log.debug("**********Starting of listComment() method.");
-		String hql = " from ForumComment ";
+		int fid=Integer.parseInt(id);
+		String hql = " from ForumComment where forumId = "+ id ;
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		log.debug("**********End of listComment() method.");
 		return query.list();

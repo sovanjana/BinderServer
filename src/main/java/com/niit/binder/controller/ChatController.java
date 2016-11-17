@@ -26,7 +26,7 @@ public class ChatController {
 		
 		log.debug("Message ID : "+message.getId());
 				
-		return OutputMessage(message, date);
+		return new OutputMessage(message, date);
 	}
 	
 	@RequestMapping(value = "/chat", method = RequestMethod.GET)

@@ -2,8 +2,11 @@ package com.niit.binder.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class OutputMessage extends Message {
 
+	
 	private Date dateTime;
 
 	public OutputMessage(Message original, Date dateTime) {

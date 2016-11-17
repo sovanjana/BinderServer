@@ -44,7 +44,7 @@ public class FriendController {
 	}
 	
 	/**
-	 * http://localhost:8081/Binder/user/friend/{id}
+	 * http://localhost:8081/Binder/user/friend/{id}				//working
 	 * @param id
 	 * @return
 	 */
@@ -64,6 +64,7 @@ public class FriendController {
 	@GetMapping(value = "/user/newFriendRequests")			
 	public ResponseEntity<List<Friend>> newFriendRequests(HttpSession session) {
 		log.debug("**********Starting of newFriendRequests() method");
+		
 		String userId = (String) session.getAttribute("loggedInUserID");
 		log.debug("********** Calling newFriendRequests() method for Userid : " + userId);
 		
@@ -96,7 +97,7 @@ public class FriendController {
 	}
 	
 	/**
-	 * http://localhost:8081/Binder/user/rejectFriend/{id}
+	 * http://localhost:8081/Binder/user/rejectFriend/{id}					//working
 	 * @param id
 	 * @param friend
 	 * @param session
@@ -104,7 +105,7 @@ public class FriendController {
 	 */
 	@PutMapping(value = "/user/rejectFriend/{id}")				
 	public ResponseEntity<Friend> rejectFriendRequest(@PathVariable("id") int id, @RequestBody Friend friend, HttpSession session) {
-		log.debug("**********Starting of rejectFriendRequest() method");
+		log.debug("**********Starting of rejectFriendRequest() method with id : "+id);
 		
 		friend.setStatus("R");	// N = New, A = Accepted, R = Rejected, U = Unfriend  						
 		friendDAO.update(friend);
@@ -114,7 +115,7 @@ public class FriendController {
 	}
 	
 	/**
-	 * http://localhost:8081/Binder/user/acceptFriend/{id}
+	 * http://localhost:8081/Binder/user/acceptFriend/{id}						//working
 	 * @param id
 	 * @param friend
 	 * @param session
@@ -122,7 +123,7 @@ public class FriendController {
 	 */
 	@PutMapping(value = "/user/acceptFriend/{id}")			
 	public ResponseEntity<Friend> acceptFriendRequest(@PathVariable("id") int id, @RequestBody Friend friend, HttpSession session) {
-		log.debug("**********Starting of acceptFriendRequest() method");
+		log.debug("**********Starting of acceptFriendRequest() method with id : "+id);
 		
 		friend.setStatus("A");	// N = New, A = Accepted, R = Rejected, U = Unfriend  						
 		friendDAO.update(friend);
@@ -132,7 +133,7 @@ public class FriendController {
 	}	
 	
 	/**
-	 * http://localhost:8081/Binder/user/unFriend/{id}
+	 * http://localhost:8081/Binder/user/unFriend/{id}						//working
 	 * @param id
 	 * @param friend
 	 * @param session
@@ -140,7 +141,7 @@ public class FriendController {
 	 */
 	@PutMapping(value = "/user/unFriend/{id}")			
 	public ResponseEntity<Friend> unFriend(@PathVariable("id") int id, @RequestBody Friend friend, HttpSession session) {
-		log.debug("**********Starting of unFriend() method");
+		log.debug("**********Starting of unFriend() method with id : "+id);
 		
 		friend.setStatus("U");	// N = New, A = Accepted, R = Rejected, U = Unfriend  		
 		friendDAO.update(friend);

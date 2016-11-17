@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.niit.binder.dao.JobDAO;
 import com.niit.binder.model.Job;
 import com.niit.binder.model.JobApplication;
+import com.niit.binder.model.Users;
 
 @RestController
 public class JobController {
@@ -203,11 +204,13 @@ public class JobController {
 	 * @return
 	 */
 	@PostMapping(value = "/jobApplied")
-	public ResponseEntity<Job> applyForJob(@RequestBody JobApplication jobApplication, HttpSession httpSession) {
+	public ResponseEntity<Job> applyForJob(@RequestBody Job job, HttpSession httpSession) {
+		
+		
 		log.debug("**********Starting of applyForJob() method.");
 
-		String loggedInUserId = (String) httpSession.getAttribute("loggedInUserId");
-		jobApplication.setUserId(loggedInUserId);
+		Users loggedInUser = (Users) httpSession.getAttribute("loggedInUser");
+		jobApplication.setUserId(loggedInUser.getId());
 		jobApplication.setJobId(job.getId());
 		jobApplication.setStatus("A"); // A = Applied ||R = Rejected ||C = Call for Interview 
 

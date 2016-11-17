@@ -29,6 +29,9 @@ public class ForumController {
 	@Autowired
 	ForumDAO forumDAO;
 	
+	@Autowired
+	Forum forum;
+	
 	/**
 	 * 	http://localhost:8081/Binder/forums								[working]
 	 * @return
@@ -130,10 +133,10 @@ public class ForumController {
 	 * http://localhost:8081/Binder/forumComments						[working]
 	 * @return
 	 */
-	@GetMapping(value = "/forumComments")
-	public ResponseEntity<List<ForumComment>> listForumComments() {
+	@GetMapping(value = "/forumComments/{forumId}")
+	public ResponseEntity<List<ForumComment>> listForumComments(@PathVariable("forumId") String forumId) {
 		log.debug("**********Starting of listForumComments() method.");
-		List<ForumComment> forumComment = forumDAO.listComment();
+		List<ForumComment> forumComment = forumDAO.listComment(forumId);
 		if(forumComment.isEmpty()) {
 			return new ResponseEntity<List<ForumComment>>(HttpStatus.NO_CONTENT);
 		}
@@ -151,8 +154,10 @@ public class ForumController {
 	public ResponseEntity<ForumComment> createForumComment(@RequestBody ForumComment forumComment, HttpSession session) {
 		log.debug("**********Starting of createForumComment() method.");
 		if(forumDAO.getComment(forumComment.getId()) == null) {
+			
 			Users loggedInUser = (Users) session.getAttribute("loggedInUser");
 			forumComment.setUserId(loggedInUser.getId());
+			forumComment.setForumId(forum.getId());
 			
 			forumDAO.saveComment(forumComment);
 			log.debug("**********End of createForumComment() method.");

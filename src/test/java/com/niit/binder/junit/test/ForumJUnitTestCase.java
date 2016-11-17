@@ -1,4 +1,4 @@
-package com.niit.binder.junit.test;
+/*package com.niit.binder.junit.test;
 
 import static org.junit.Assert.assertEquals;
 
@@ -65,3 +65,4 @@ public class ForumJUnitTestCase {
 		assertEquals(forumDAO.get("forum001").getId(), "forum001");
 	}
 }
+*/
