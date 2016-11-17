@@ -27,4 +27,6 @@ public interface FriendDAO {
 	
 	public void setOnline(String userId);					//implemented...
 	public void setOffline(String userId);					//implemented...
+	
+	public boolean isFriend(String userId, String friendId);
 }

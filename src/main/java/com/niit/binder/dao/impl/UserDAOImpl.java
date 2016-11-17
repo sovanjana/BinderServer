@@ -128,4 +128,5 @@ public class UserDAOImpl implements UserDAO {
 		query.executeUpdate();
 		log.debug("**********End of setOffline() method.");
 	}
+	
 }

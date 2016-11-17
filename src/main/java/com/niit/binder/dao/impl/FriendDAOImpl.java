@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -173,6 +174,24 @@ public class FriendDAOImpl implements FriendDAO {
 		else {
 			return null;
 		}
+	}
+	public boolean isFriend(String userId, String friendId) {
+		log.debug("**********Starting of isFriend() method.");
+		
+		String hql = "from Friend where (userId = '" + userId +"' and friendId = '"+ friendId +"') or (friendId = '" + userId +"' and userId = '"+ friendId +"')";
+		Session session=sessionFactory.openSession();
+		Query query = session.createQuery(hql);
+		
+		List<Friend> list = query.list();
+		
+		if (list != null && !list.isEmpty()) {
+			log.debug("**********End of isFriend() method.");
+			//session.flush();
+			//session.close();
+			return true;
+		}
+		log.debug("**********End of isFriend() method.");
+		return false;
 	}
 		
 }

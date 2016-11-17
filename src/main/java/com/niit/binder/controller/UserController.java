@@ -1,5 +1,6 @@
 package com.niit.binder.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -50,6 +51,31 @@ public class UserController {
 		}
 		log.debug("**********End of listUsers() method.");
 		return new ResponseEntity<List<Users>>(users, HttpStatus.OK);
+	}
+	
+	/**
+	 * 	http://localhost:8081/Binder/searchForFriends			//working
+	 * @return
+	 */
+	@GetMapping(value = "/searchForFriends")
+	public ResponseEntity<List<Users>> listSearchForFriends(HttpSession session) {
+		ArrayList<Users> list = new ArrayList<Users>();
+		log.debug("**********Starting of listSearchForFriends() method.");
+		List<Users> users = userDAO.list();
+		if(users.isEmpty()) {
+			return new ResponseEntity<List<Users>>(HttpStatus.NO_CONTENT);
+		}
+		Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+		for(Users  u:users)
+		{
+			String userId = u.getId();
+			boolean status = friendDAO.isFriend(userId, loggedInUser.getId());
+			if (!status  && userId.compareTo(loggedInUser.getId())!=0) {
+				list.add(u);
+			}
+		}
+		log.debug("**********End of listSearchForFriends() method.");
+		return new ResponseEntity<List<Users>>(list, HttpStatus.OK);
 	}
 	
 	/**

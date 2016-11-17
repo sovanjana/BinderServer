@@ -35,7 +35,7 @@ public class JobController {
 	JobDAO jobDAO;
 
 	/**
-	 * http://localhost:8081/Binder/jobs //working
+	 * http://localhost:8081/Binder/jobs 					//working
 	 * 
 	 * @return
 	 */
@@ -61,7 +61,7 @@ public class JobController {
 	}
 
 	/**
-	 * http://localhost:8081/Binder/job/ //working
+	 * http://localhost:8081/Binder/job/ 					//working
 	 * 
 	 * @param job
 	 * @return
@@ -80,7 +80,7 @@ public class JobController {
 	}
 
 	/**
-	 * http://localhost:8081/Binder/job/{id} //working
+	 * http://localhost:8081/Binder/job/{id} 					//working
 	 * 
 	 * @param id
 	 * @param job
@@ -101,7 +101,7 @@ public class JobController {
 	}
 
 	/**
-	 * http://localhost:8081/Binder/job/{id} //working
+	 * http://localhost:8081/Binder/job/{id} 					//working
 	 * 
 	 * @param id
 	 * @return
@@ -121,15 +121,17 @@ public class JobController {
 	}
 
 	/**
-	 * http://localhost:8081/Binder/getMyAppliedJobs/
+	 * http://localhost:8081/Binder/getMyAppliedJobs
 	 * 
 	 * @param httpSession
 	 * @return
 	 */
-	@GetMapping(value = "/getMyAppliedJobs/")
+	@GetMapping(value = "/getMyAppliedJobs")
 	public ResponseEntity<List<Job>> getMyAppliedJobs(HttpSession httpSession) {
 		log.debug("**********Starting of getMyAppliedJobs() method.");
-		String loggedInUserId = (String) httpSession.getAttribute("loggedInUserId");
+		Users loggedInUser = (Users) httpSession.getAttribute("loggedInUser");
+		String loggedInUserId = loggedInUser.getId();
+		
 		@SuppressWarnings("unchecked")
 		List<Job> jobs = (List<Job>) jobDAO.getMyAppliedJobs(loggedInUserId);
 		log.debug("**********End of getMyAppliedJobs() method.");
