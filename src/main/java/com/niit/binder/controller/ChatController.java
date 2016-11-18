@@ -19,19 +19,20 @@ public class ChatController {
 	
 	@MessageMapping("/chat")
 	@SendTo("/topic/message")
-	public OutputMessage sendMessage(Message message, Date date) {
+	public OutputMessage sendMessage(Message message) {
 		log.debug("Calling the method sendMessage().");
 		
 		log.debug("Message : "+message.getMessage());
 		
 		log.debug("Message ID : "+message.getId());
 				
-		return new OutputMessage(message, date);
+	//	return new OutputMessage(message, date);
+		return new OutputMessage(message);
 	}
 	
-	@RequestMapping(value = "/chat", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/chat", method = RequestMethod.GET)
 	public String viewApplication() {
 		return "chat";
-	}
+	}*/
 
 }
