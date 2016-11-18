@@ -50,6 +50,7 @@ public class UserDAOImpl implements UserDAO {
 	public boolean save(Users users){
 		try {
 			log.debug("**********Starting of save() method.");
+			users.setIsOnline("N");
 			sessionFactory.getCurrentSession().save(users);
 			log.debug("**********End of save() method.");
 			return true;
