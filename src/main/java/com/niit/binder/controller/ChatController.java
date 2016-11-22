@@ -1,5 +1,6 @@
 package com.niit.binder.controller;
 
+import java.text.DateFormat;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
@@ -26,8 +27,19 @@ public class ChatController {
 		
 		log.debug("Message ID : "+message.getId());
 				
-	//	return new OutputMessage(message, date);
-		return new OutputMessage(message);
+		return new OutputMessage(message, new Date());
+		/*System.out.println("this is from controller");
+		
+		Date dt=new Date();
+		DateFormat df=DateFormat.getTimeInstance(DateFormat.MEDIUM);
+		String d=df.format(dt);
+		
+		String msg=message.getMessage();
+		
+		String newmsg=d+" : "+msg;
+		message.setMessage(newmsg);
+		
+		return new OutputMessage(message);*/
 	}
 	
 	/*@RequestMapping(value = "/chat", method = RequestMethod.GET)

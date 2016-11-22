@@ -126,16 +126,19 @@
 		</dependency>
 
 		<!-- Spring Web-Socket, Messaging and javax websocket -->
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-websocket</artifactId>
-			<version>4.3.2.RELEASE</version>
+			<version>4.1.6.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-messaging</artifactId>
-			<version>4.3.2.RELEASE</version>
+			<version>4.1.6.RELEASE</version>
 		</dependency>
+		
+		
 		<dependency>
 			<groupId>javax.websocket</groupId>
 			<artifactId>javax.websocket-api</artifactId>
