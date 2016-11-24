@@ -7,9 +7,9 @@ import org.springframework.web.socket.config.annotation.AbstractWebSocketMessage
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
-@Configuration
+@Configuration				//@Configuration indicates that the class can be used by the Spring IoC container as a source of bean definitions.
 @EnableWebSocketMessageBroker
-@ComponentScan(basePackages = "com.niit")
+@ComponentScan(basePackages = "com.niit")		//@ComponentScan annotation is used to specify the base packages to scan.
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer{
 
 	@Override

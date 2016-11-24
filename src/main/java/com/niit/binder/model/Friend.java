@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Entity
 @Table(name = "B_FRIEND")
-@Component
+@Component				//used for automatic bean detection using classpath scan in Spring framework.
 public class Friend extends BaseDomain implements Serializable{
 	
 	/**

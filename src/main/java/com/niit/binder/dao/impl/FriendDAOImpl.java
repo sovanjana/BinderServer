@@ -14,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.niit.binder.dao.FriendDAO;
 import com.niit.binder.model.Friend;
 
-@EnableTransactionManagement
+@EnableTransactionManagement		/**when we are using @Configuration i.e XML free configuration and need to 
+									 * connect to database with hibernate. We need to use @EnableTransactionManagement.
+									 */
 @Repository(value="friendDAO")
 public class FriendDAOImpl implements FriendDAO {
 	

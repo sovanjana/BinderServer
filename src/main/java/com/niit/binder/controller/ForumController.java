@@ -56,9 +56,12 @@ public class ForumController {
 	public ResponseEntity<Forum> createForum(@RequestBody Forum forum, HttpSession session) {
 		log.debug("**********Starting of createForum() method.");
 		if(forumDAO.get(forum.getId()) == null) {
+			
 			Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+			
 			forum.setUserId(loggedInUser.getId());
 			forumDAO.save(forum);
+			
 			log.debug("**********End of createForum() method.");
 			return new ResponseEntity<Forum>(forum, HttpStatus.OK);
 		}
@@ -153,18 +156,11 @@ public class ForumController {
 	@PostMapping(value = "/forumComment/")
 	public ResponseEntity<ForumComment> createForumComment(@RequestBody ForumComment forumComment, HttpSession session) {
 		log.debug("**********Starting of createForumComment() method.");
-		if(forumDAO.getComment(forumComment.getId()) == null) {
-			
-			Users loggedInUser = (Users) session.getAttribute("loggedInUser");
-			forumComment.setUserId(loggedInUser.getId());
-			forumComment.setForumId(forum.getId());
-			
-			forumDAO.saveComment(forumComment);
-			log.debug("**********End of createForumComment() method.");
-			return new ResponseEntity<ForumComment>(forumComment, HttpStatus.OK);
-		}
-		forumComment.setErrorMessage("ForumComment already exist with id : " +forumComment.getId());
-		log.error("ForumComment already exist with id : " +forumComment.getId());
+		Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+		forumComment.setUserId(loggedInUser.getId());
+		
+		forumDAO.saveComment(forumComment);
+		log.debug("**********End of createForumComment() method.");
 		return new ResponseEntity<ForumComment>(forumComment, HttpStatus.OK);
 	}
 	

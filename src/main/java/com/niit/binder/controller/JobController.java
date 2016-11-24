@@ -206,9 +206,7 @@ public class JobController {
 	 * @return
 	 */
 	@PostMapping(value = "/jobApplied")
-	public ResponseEntity<Job> applyForJob(@RequestBody Job job, HttpSession httpSession) {
-		
-		
+	public ResponseEntity<Job> applyForJob(@RequestBody Job job, HttpSession httpSession) {		
 		log.debug("**********Starting of applyForJob() method.");
 
 		Users loggedInUser = (Users) httpSession.getAttribute("loggedInUser");
