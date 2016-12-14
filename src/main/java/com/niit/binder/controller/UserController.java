@@ -103,7 +103,7 @@ public class UserController {
 	 * @return
 	 */
 	@PutMapping(value = "/user/{id}")
-	public ResponseEntity<Users> updateUser(@PathVariable("id") String id, @RequestBody Users users) {
+	public ResponseEntity<Users> updateUser(@PathVariable("id") String id, @RequestBody Users users, HttpSession session) {
 		log.debug("**********Starting of updateUser() method.");
 		if(userDAO.get(id) == null) {
 			users = new Users();
@@ -111,6 +111,9 @@ public class UserController {
 			log.error("User does not exist with id : " +users.getId());
 			return new ResponseEntity<Users>(users, HttpStatus.NOT_FOUND);
 		}
+		Users loggedInUser = (Users) session.getAttribute("loggedInUser");
+		users.setId(loggedInUser.getId());
+		users.setRole(loggedInUser.getRole());
 		userDAO.update(users);
 		log.debug("**********End of updateUser() method.");
 		return new ResponseEntity<Users>(users, HttpStatus.OK);

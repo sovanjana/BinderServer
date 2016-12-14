@@ -163,5 +163,41 @@ public class ForumDAOImpl implements ForumDAO {
 		else {
 			return null;
 		}
-	}	
+	}
+	
+	/*@Transactional
+	public Forum getLike(int id) {
+		log.debug("**********Starting of getLike() method.");
+		String hql = "countLike from Forum where id = '" + id + "'";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		
+		@SuppressWarnings("unchecked")
+		List<Forum> list = query.list();
+		
+		if(list != null && !list.isEmpty()) {
+			log.debug("**********End of getLike() method.");
+			return list.get(0);
+		}
+		else {
+			return null;
+		}
+	}*/
+	
+	/*@Transactional
+	public Forum getCountComment(int id) {
+		log.debug("**********Starting of getLike() method.");
+		String hql = "countComment from Forum where id = '" + id + "'";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		
+		@SuppressWarnings("unchecked")
+		List<Forum> list = query.list();
+		
+		if(list != null && !list.isEmpty()) {
+			log.debug("**********End of getLike() method.");
+			return list.get(0);
+		}
+		else {
+			return null;
+		}
+	}*/	
 }

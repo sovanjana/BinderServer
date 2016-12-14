@@ -133,5 +133,23 @@ public class BlogDAOImpl implements BlogDAO {
 		Query query = sessionFactory.getCurrentSession().createQuery(hql);
 		log.debug("**********End of list() method.");
 		return query.list();
-	}	
+	}
+	
+	/*@Transactional
+	public Blog getLike(int id) {
+		log.debug("**********Starting of getLike() method.");
+		String hql = "countLike from Blog where id = '" + id + "'";
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		
+		@SuppressWarnings("unchecked")
+		List<Blog> list = query.list();
+		
+		if(list != null && !list.isEmpty()) {
+			log.debug("**********End of get() method.");
+			return list.get(0);
+		}
+		else {
+			return null;
+		}
+	}*/
 }

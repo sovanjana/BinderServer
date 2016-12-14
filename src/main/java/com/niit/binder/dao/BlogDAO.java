@@ -25,4 +25,6 @@ public interface BlogDAO {
 	public Blog get(int id);
 	
 	public List<Blog> list();
+	
+	//public Blog getLike(int id);
 }

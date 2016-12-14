@@ -55,6 +55,9 @@ public class BlogController {
 		if(blogDAO.get(blog.getId()) == null) {
 			Users loggedInUser = (Users) session.getAttribute("loggedInUser");
 			blog.setUserId(loggedInUser.getId());
+			
+			blog.setCountLike(0);
+			
 			blogDAO.save(blog);
 			log.debug("**********End of createBlog() method.");
 			return new ResponseEntity<Blog>(blog, HttpStatus.OK);
@@ -155,5 +158,24 @@ public class BlogController {
 		
 		log.debug("**********End of rejectBlog() method.");
 		return new ResponseEntity<Blog> (blog, HttpStatus.OK);
+	}
+	
+	/**
+	 * http://localhost:8081/Binder/likeBlog/{id}
+	 * @param id
+	 * @param blog
+	 * @return
+	 */
+	@PutMapping(value = "/likeBlog/{id}")
+	public ResponseEntity<Blog> likeBlog(@PathVariable("id") int id, @RequestBody Blog blog){
+		log.debug("**********Starting of likeBlog() method.");
+
+		int like = blog.getCountLike();
+		blog.setCountLike(like + 1);
+		
+		blogDAO.update(blog);
+		
+		log.debug("**********End of likeBlog() method.");
+		return new ResponseEntity<Blog>(blog, HttpStatus.OK);
 	}
 }

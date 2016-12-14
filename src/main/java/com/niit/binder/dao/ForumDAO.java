@@ -27,4 +27,7 @@ public interface ForumDAO {
 	
 	public List<Forum> list();	
 	public List<ForumComment> listComment(String id);		//forumComment
+	
+	//public Forum getLike(int id);
+	//public Forum getCountComment(int id);
 }

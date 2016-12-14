@@ -39,6 +39,12 @@ public class Forum extends BaseDomain implements Serializable{
 	
 	private String userId;
 	
+	@Column(name = "COUNT_FORUM_LIKE")
+	private int countLike;
+	
+	@Column(name = "COUNT_COMMENT")
+	private int countComment;
+	
 	/**
 	 *  getters/setters for all the fields taken... 
 	 */
@@ -66,5 +72,17 @@ public class Forum extends BaseDomain implements Serializable{
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public int getCountLike() {
+		return countLike;
+	}
+	public void setCountLike(int countLike) {
+		this.countLike = countLike;
+	}
+	public int getCountComment() {
+		return countComment;
+	}
+	public void setCountComment(int countComment) {
+		this.countComment = countComment;
 	}
 }

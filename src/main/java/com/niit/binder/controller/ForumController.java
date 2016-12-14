@@ -129,7 +129,42 @@ public class ForumController {
 		return new ResponseEntity<Forum>(forum, HttpStatus.OK);
 	}
 	
-	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+	/**
+	 * http://localhost:8081/Binder/forum/likeForum/{id}			[working]
+	 * @param id
+	 * @param forum
+	 * @return
+	 */
+	@PutMapping(value = "/forum/likeForum/{id}")
+	public ResponseEntity<Forum> likeForum(@PathVariable("id") int id, @RequestBody Forum forum){
+		log.debug("**********Starting of likeForum() method.");
+		
+		int like = forum.getCountLike();
+		forum.setCountLike(like + 1);		
+		forumDAO.update(forum);
+		
+		log.debug("**********End of likeForum() method.");
+		return new ResponseEntity<Forum>(forum, HttpStatus.OK);
+	}
+	
+	/**
+	 * http://localhost:8081/Binder/forum/countComment/{id}			[working]
+	 * @param id
+	 * @param forum
+	 * @return
+	 */
+	@PutMapping(value = "/forum/countComment/{id}")
+	public ResponseEntity<Forum> countComment(@PathVariable("id") int id, @RequestBody Forum forum){
+		log.debug("**********Starting of countComment() method.");
+		
+		int countComment = forum.getCountComment();
+		forum.setCountComment(countComment + 1);
+		forumDAO.update(forum);
+		
+		log.debug("**********End of countComment() method.");
+		return new ResponseEntity<Forum>(forum, HttpStatus.OK);
+	}
+	
 	/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|Forum Comment Area|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 	
 	/**

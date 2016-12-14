@@ -46,6 +46,9 @@ public class Blog extends BaseDomain implements Serializable {
 		
 	private String status;
 	
+	@Column(name = "COUNT_BLOG_LIKE")
+	private int countLike;
+	
 	/**
 	 *  getters/setters for all the fields taken... 
 	 */
@@ -91,5 +94,11 @@ public class Blog extends BaseDomain implements Serializable {
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
-	}	
+	}
+	public int getCountLike() {
+		return countLike;
+	}
+	public void setCountLike(int countLike) {
+		this.countLike = countLike;
+	}
 }
